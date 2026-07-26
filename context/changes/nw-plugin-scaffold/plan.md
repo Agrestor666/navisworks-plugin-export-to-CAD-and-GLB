@@ -305,6 +305,14 @@ This is a from-scratch reshape, not a data migration: the disposable webapi scaf
 - Target framework constraint: `NavisworksAPIdlls2023` NuGet package metadata (net48); Autodesk Community threads on host crashes with modern .NET
 - Post-build deploy pattern: TwentyTwo.space "Navisworks API: Creating Navisworks Add-Ins"; community `NavisAddinManager` / `NetPluginPropertyDatabaseExample` project files
 
+## Implementation Addendum
+
+Agreed during implement (dev machine had no local Navisworks Manage 2023 install):
+
+1. **NuGet API fallback** — both `.csproj` files prefer `HintPath` to `$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll` when present; otherwise reference `NavisworksAPIdlls2023` (PrivateAssets/ExcludeAssets runtime) so `dotnet build` works off-host.
+2. **`LangVersion=latest`** in `Directory.Build.props` — required so `<Nullable>enable</Nullable>` compiles under `net48` (default C# 7.3 rejects it).
+3. **`NwApplication` type alias** in both command stubs — resolves the `Application` name clash between `Autodesk.Navisworks.Api` and `System.Windows.Forms`.
+
 ## Progress
 
 > Convention: `- [ ]` pending, `- [x]` done. Append ` — <commit sha>` when a step lands. Do not rename step titles. See `references/progress-format.md`.

@@ -1,7 +1,7 @@
 ---
 change_id: nw-plugin-scaffold
 title: Scaffold Navisworks Manage 2023 plugin host (loadable command entry points)
-status: implemented
+status: impl_reviewed
 created: 2026-07-26
 updated: 2026-07-26
 archived_at: null

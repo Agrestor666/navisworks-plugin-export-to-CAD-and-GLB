@@ -1,6 +1,8 @@
 <Project>
   <PropertyGroup>
     <NavisworksInstallDir Condition="'$(NavisworksInstallDir)' == ''">C:\Program Files\Autodesk\Navisworks Manage 2023\</NavisworksInstallDir>
+    <NavisworksInstallDir>$([MSBuild]::EnsureTrailingSlash('$(NavisworksInstallDir)'))</NavisworksInstallDir>
+    <Platforms>x64</Platforms>
     <!-- net48 defaults to C# 7.3; nullable requires C# 8+. -->
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

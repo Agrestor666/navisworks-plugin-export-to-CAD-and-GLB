@@ -30,9 +30,8 @@
   </ItemGroup>
 
   <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
-    <RemoveDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" Condition="Exists('$(NavisworksInstallDir)Plugins\$(AssemblyName)')" ContinueOnError="WarnAndContinue" />
     <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
   </Target>
 
 </Project>
