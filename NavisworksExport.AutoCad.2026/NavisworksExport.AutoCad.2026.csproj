@@ -28,6 +28,11 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Autodesk.Navisworks.ComApi">
+      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.ComApi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
   </ItemGroup>
 
   <!-- Copy plugin + private deps (Geometry.2026, ACadSharp, …); skip Autodesk host assemblies. -->

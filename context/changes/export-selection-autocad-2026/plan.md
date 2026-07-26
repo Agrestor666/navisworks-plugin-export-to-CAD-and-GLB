@@ -307,27 +307,27 @@ Prove the end-to-end flow inside Manage 2026 + AutoCAD, and align roadmap status
 
 #### Automated
 
-- [x] 2.1 `dotnet build` AutoCad.2026 succeeds with ACadSharp restore
-- [x] 2.2 `dotnet build tools/DwgWriterHarness` succeeds
-- [x] 2.3 Harness writes a non-empty `.dwg` and exits 0
+- [x] 2.1 `dotnet build` AutoCad.2026 succeeds with ACadSharp restore — ff77516
+- [x] 2.2 `dotnet build tools/DwgWriterHarness` succeeds — ff77516
+- [x] 2.3 Harness writes a non-empty `.dwg` and exits 0 — ff77516
 
 #### Manual
 
-- [x] 2.4 Harness DWG opens shaded/filled in AutoCAD or TrueView (or documented VPORT workaround)
-- [x] 2.5 Distinct per-face colors visible on the harness cube
-- [x] 2.6 Harness DWG opens with no import/recovery errors
+- [x] 2.4 Harness DWG opens shaded/filled in AutoCAD or TrueView (or documented VPORT workaround) — ff77516
+- [x] 2.5 Distinct per-face colors visible on the harness cube — ff77516
+- [x] 2.6 Harness DWG opens with no import/recovery errors — ff77516
 
 ### Phase 3: Command wiring on AutoCad.2026
 
 #### Automated
 
-- [ ] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
-- [ ] 3.2 AutoCad.2026 output folder includes plugin + ACadSharp/Geometry dependency DLLs
-- [ ] 3.3 S-03 checklist landed: assembly resolver, NoInlining RunExport, temp log, ComApi reference, multi-DLL+PDB deploy
+- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
+- [x] 3.2 AutoCad.2026 output folder includes plugin + ACadSharp/Geometry dependency DLLs
+- [x] 3.3 S-03 checklist landed: assembly resolver, NoInlining RunExport, temp log, ComApi reference, multi-DLL+PDB deploy
 
 #### Manual
 
-- [ ] 3.4 Command exercised in Phase 4 host matrix
+- [x] 3.4 Command exercised in Phase 4 host matrix
 
 ### Phase 4: Host verification & roadmap hygiene
 
