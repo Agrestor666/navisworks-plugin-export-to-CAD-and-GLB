@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NavisworksExport.Geometry\NavisworksExport.Geometry.csproj" />
   </ItemGroup>
 
@@ -33,9 +37,13 @@
     </PackageReference>
   </ItemGroup>
 
+  <!-- Copy plugin + private deps (Geometry, SharpGLTF, …); skip Autodesk host assemblies. -->
   <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
+    <ItemGroup>
+      <_DeployDlls Include="$(TargetDir)*.dll" Exclude="$(TargetDir)Autodesk.*.dll" />
+    </ItemGroup>
     <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="@(_DeployDlls)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
   </Target>
 
 </Project>

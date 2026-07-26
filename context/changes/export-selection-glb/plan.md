@@ -250,23 +250,23 @@ N/A — no existing data or prior export format to migrate from; this is the fir
 
 #### Automated
 
-- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds with the new project added to the `.sln`
-- [x] 1.2 `NavisworksExport.Geometry` builds as net48/x64 and resolves the three Navisworks assemblies via HintPath/NuGet fallback
-- [x] 1.3 `NavisworksExport.Glb` still builds after the Phase 3 project reference is added
+- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds with the new project added to the `.sln` — 6f72f9f
+- [x] 1.2 `NavisworksExport.Geometry` builds as net48/x64 and resolves the three Navisworks assemblies via HintPath/NuGet fallback — 6f72f9f
+- [x] 1.3 `NavisworksExport.Glb` still builds after the Phase 3 project reference is added — 6f72f9f
 
 #### Manual
 
-- [x] 1.4 No standalone check — exercised together with Phase 4
+- [x] 1.4 No standalone check — exercised together with Phase 4 — 6f72f9f
 
 ### Phase 2: GLB writer
 
 #### Automated
 
-- [ ] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the new `ProjectReference` resolved
+- [x] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the new `ProjectReference` resolved
 
 #### Manual
 
-- [ ] 2.2 Hardcoded triangle list round-trips through `GlbWriter` and opens upright, colored, uncompressed in a viewer/PowerPoint
+- [x] 2.2 Hardcoded triangle list round-trips through `GlbWriter` and opens upright, colored, uncompressed in a viewer/PowerPoint
 
 ### Phase 3: Command wiring
 

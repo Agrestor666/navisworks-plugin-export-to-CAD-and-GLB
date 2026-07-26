@@ -359,6 +359,9 @@ paket-files/
 #tools/**
 #!tools/packages.config
 
+# Phase 2 GlbWriter harness output (regenerate via tools/GlbWriterHarness)
+tools/GlbWriterHarness/*.glb
+
 # Tabs Studio
 *.tss
 

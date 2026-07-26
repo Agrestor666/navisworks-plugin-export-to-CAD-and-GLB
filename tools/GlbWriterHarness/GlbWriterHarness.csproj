@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>GlbWriterHarness</RootNamespace>
+    <!-- Throwaway Phase 2 smoke check — not part of the Navisworks solution. -->
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NavisworksExport.Glb\NavisworksExport.Glb.csproj" />
+    <ProjectReference Include="..\..\NavisworksExport.Geometry\NavisworksExport.Geometry.csproj" />
+  </ItemGroup>
+
+</Project>
