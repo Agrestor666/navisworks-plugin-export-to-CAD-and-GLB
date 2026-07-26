@@ -272,25 +272,25 @@ N/A — no existing data or prior export format to migrate from; this is the fir
 
 #### Automated
 
-- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
+- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds — e10ee53
 
 #### Manual
 
-- [x] 3.2 Empty selection → error, no dialog, no file
-- [x] 3.3 Non-empty selection → dialog, file written, success message
-- [x] 3.4 Zero-triangle non-empty selection → same error pattern as empty selection
-- [x] 3.5 Save dialog cancel → silent abort, no error, no file
-- [x] 3.6 Source document unchanged after export
+- [x] 3.2 Empty selection → error, no dialog, no file — e10ee53
+- [x] 3.3 Non-empty selection → dialog, file written, success message — e10ee53
+- [x] 3.4 Zero-triangle non-empty selection → same error pattern as empty selection — e10ee53
+- [x] 3.5 Save dialog cancel → silent abort, no error, no file — e10ee53
+- [x] 3.6 Source document unchanged after export — e10ee53
 
 ### Phase 4: Host verification
 
 #### Automated
 
-- [ ] 4.1 `dotnet build NavisworksExportPlugins.sln` succeeds (final full-solution check)
+- [x] 4.1 `dotnet build NavisworksExportPlugins.sln` succeeds (final full-solution check)
 
 #### Manual
 
-- [ ] 4.2 "Export to GLB" appears under Add-Ins and runs against a real selection
-- [ ] 4.3 Resulting `.glb` renders correctly and interactively in PowerPoint
-- [ ] 4.4 Large/instanced selection exports without hanging
-- [ ] 4.5 Original document unchanged after the full run
+- [x] 4.2 "Export to GLB" appears under Add-Ins and runs against a real selection
+- [x] 4.3 Resulting `.glb` renders correctly and interactively in PowerPoint
+- [x] 4.4 Large/instanced selection exports without hanging
+- [x] 4.5 Original document unchanged after the full run
