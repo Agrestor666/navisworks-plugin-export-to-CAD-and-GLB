@@ -1,10 +1,10 @@
 ---
 change_id: export-selection-autocad-2026
 title: Export selection to AutoCAD on Manage 2026 (DWG) — PolyfaceMesh, color, shaded viewport
-status: implemented
+status: archived
 created: 2026-07-26
 updated: 2026-07-26
-archived_at: null
+archived_at: 2026-07-26T21:49:05Z
 ---
 
 ## Notes

@@ -34,7 +34,7 @@ Koordynator BIM nie ma prostego sposobu na przeniesienie **tylko zaznaczonej sel
 | S-02 | export-selection-autocad | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) i otworzyć go do dalszej pracy | F-01 | FR-004, FR-005, FR-006, FR-007, FR-008 | proposed |
 | F-02 | nw-plugin-scaffold-2026 | (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend | F-01 | NFR (host wave), Access Control | done |
 | S-03 | export-selection-glb-2026 | użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint | F-02, S-01 | US-01, FR-001, FR-002, FR-003, FR-007, FR-008 | done |
-| S-04 | export-selection-autocad-2026 | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy | F-02 | FR-004, FR-005, FR-006, FR-007, FR-008 | in progress |
+| S-04 | export-selection-autocad-2026 | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy | F-02 | FR-004, FR-005, FR-006, FR-007, FR-008 | done |
 
 ## Streams
 
@@ -137,7 +137,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** wspierana wersja AutoCAD dostępna do weryfikacji otwarcia pliku; Navisworks Manage 2026 na stanowisku weryfikacji
 - **Unknowns:** —
 - **Risk:** 2026-first AutoCAD proof (PolyfaceMesh + ACadSharp) — odblokowane bez `S-02`. `S-02` wraca później jako reverse-port na Manage 2023. Risk: dual-host maintenance later if 2023 COM/API differs from proven 2026 path.
-- **Status:** in progress
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -148,7 +148,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 | S-02 | export-selection-autocad | Eksport selekcji do AutoCAD (DWG/DXF) | no | **Odłożone** — reverse-port po `S-04` |
 | F-02 | nw-plugin-scaffold-2026 | Scaffold pluginów Navisworks Manage 2026 (loadable command host) | no | done / archived |
 | S-03 | export-selection-glb-2026 | Eksport selekcji do GLB na Manage 2026 (PowerPoint 3D) | no | done — archived |
-| S-04 | export-selection-autocad-2026 | Eksport selekcji do AutoCAD na Manage 2026 (DWG/DXF) | no | in progress (`context/changes/export-selection-autocad-2026/`) — nie blocked na S-02 |
+| S-04 | export-selection-autocad-2026 | Eksport selekcji do AutoCAD na Manage 2026 (DWG/DXF) | no | done — archived |
 
 ## Open Roadmap Questions
 
@@ -173,3 +173,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **S-01: użytkownik może wyeksportować zaznaczoną selekcję do GLB i otworzyć ją jako interaktywny model 3D w PowerPoint** — Implemented 2026-07-26 (`context/changes/export-selection-glb/`); archive pending. Lesson: —.
 - **F-02: (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend — bez pełnej logiki eksportu; ten sam układ co F-01, osobny target hosta.** — Archived 2026-07-26 → `context/archive/2026-07-26-nw-plugin-scaffold-2026/`. Lesson: —.
 - **S-03: użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-glb-2026/`. Lesson: Manage 2026 wymaga assembly resolver, column-major macierzy, rozwijania selekcji do liści — patrz `context/foundation/lessons.md`.
+- **S-04: użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-autocad-2026/`. Lesson: —.
