@@ -286,11 +286,11 @@ N/A — no existing data or prior export format to migrate from; this is the fir
 
 #### Automated
 
-- [x] 4.1 `dotnet build NavisworksExportPlugins.sln` succeeds (final full-solution check)
+- [x] 4.1 `dotnet build NavisworksExportPlugins.sln` succeeds (final full-solution check) — b9b34dc
 
 #### Manual
 
-- [x] 4.2 "Export to GLB" appears under Add-Ins and runs against a real selection
-- [x] 4.3 Resulting `.glb` renders correctly and interactively in PowerPoint
-- [x] 4.4 Large/instanced selection exports without hanging
-- [x] 4.5 Original document unchanged after the full run
+- [x] 4.2 "Export to GLB" appears under Add-Ins and runs against a real selection — b9b34dc
+- [x] 4.3 Resulting `.glb` renders correctly and interactively in PowerPoint — b9b34dc
+- [x] 4.4 Large/instanced selection exports without hanging — b9b34dc
+- [x] 4.5 Original document unchanged after the full run — b9b34dc
