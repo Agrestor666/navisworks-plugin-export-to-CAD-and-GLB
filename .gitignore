@@ -362,6 +362,9 @@ paket-files/
 # Phase 2 GlbWriter harness output (regenerate via tools/GlbWriterHarness)
 tools/GlbWriterHarness/*.glb
 
+# Local deploy staging (copy into Navisworks Plugins\)
+/dist/
+
 # Tabs Studio
 *.tss
 

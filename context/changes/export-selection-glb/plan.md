@@ -262,25 +262,25 @@ N/A — no existing data or prior export format to migrate from; this is the fir
 
 #### Automated
 
-- [x] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the new `ProjectReference` resolved
+- [x] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the new `ProjectReference` resolved — b6d068e
 
 #### Manual
 
-- [x] 2.2 Hardcoded triangle list round-trips through `GlbWriter` and opens upright, colored, uncompressed in a viewer/PowerPoint
+- [x] 2.2 Hardcoded triangle list round-trips through `GlbWriter` and opens upright, colored, uncompressed in a viewer/PowerPoint — b6d068e
 
 ### Phase 3: Command wiring
 
 #### Automated
 
-- [ ] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
+- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
 
 #### Manual
 
-- [ ] 3.2 Empty selection → error, no dialog, no file
-- [ ] 3.3 Non-empty selection → dialog, file written, success message
-- [ ] 3.4 Zero-triangle non-empty selection → same error pattern as empty selection
-- [ ] 3.5 Save dialog cancel → silent abort, no error, no file
-- [ ] 3.6 Source document unchanged after export
+- [x] 3.2 Empty selection → error, no dialog, no file
+- [x] 3.3 Non-empty selection → dialog, file written, success message
+- [x] 3.4 Zero-triangle non-empty selection → same error pattern as empty selection
+- [x] 3.5 Save dialog cancel → silent abort, no error, no file
+- [x] 3.6 Source document unchanged after export
 
 ### Phase 4: Host verification
 
