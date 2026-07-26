@@ -1,10 +1,10 @@
 ---
 change_id: nw-plugin-scaffold-2026
 title: Scaffold plugins for Navisworks Manage 2026 (loadable command host)
-status: impl_reviewed
+status: archived
 created: 2026-07-26
 updated: 2026-07-26
-archived_at: null
+archived_at: 2026-07-26T16:25:54Z
 ---
 
 ## Notes
