@@ -238,24 +238,24 @@ Additive only. No changes to 2023 assemblies, no data migration. `NavisworksExpo
 
 #### Automated
 
-- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds and produces `NavisworksExport.Geometry.2026.dll`
-- [x] 1.2 `NavisworksExport.Geometry.2026.csproj` contains no `NavisworksAPIdlls*` / third-party NuGet API reference
-- [x] 1.3 Existing 2023 projects and `NavisworksExport.Geometry` still build unchanged
+- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds and produces `NavisworksExport.Geometry.2026.dll` — c2464c9
+- [x] 1.2 `NavisworksExport.Geometry.2026.csproj` contains no `NavisworksAPIdlls*` / third-party NuGet API reference — c2464c9
+- [x] 1.3 Existing 2023 projects and `NavisworksExport.Geometry` still build unchanged — c2464c9
 
 #### Manual
 
-- [x] 1.4 No standalone check — exercised together with Phase 4
+- [x] 1.4 No standalone check — exercised together with Phase 4 — c2464c9
 
 ### Phase 2: GLB writer wiring on the 2026 twin
 
 #### Automated
 
-- [ ] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the `Geometry.2026` project reference resolved
-- [ ] 2.2 2023's `NavisworksExport.Glb` still builds unaffected
+- [x] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the `Geometry.2026` project reference resolved
+- [x] 2.2 2023's `NavisworksExport.Glb` still builds unaffected
 
 #### Manual
 
-- [ ] 2.3 No standalone check — deploy-target correctness confirmed in Phase 4
+- [x] 2.3 No standalone check — deploy-target correctness confirmed in Phase 4
 
 ### Phase 3: Command wiring
 
