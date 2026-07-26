@@ -52,6 +52,7 @@ Mirror F-01 as **parallel projects** with a `.2026` assembly suffix so both host
 
 - **Elevated deploy**: same Program Files friction as F-01 — `ContinueOnError="WarnAndContinue"` on MakeDir/Copy; non-elevated build must still exit 0; host verification requires an elevated build so DLLs actually land under Manage 2026 `Plugins\`.
 - **Overwrite-only Copy**: do **not** `RemoveDir` before Copy (F-01 impl-review lesson) — overwrite with `OverwriteReadOnlyFiles="true"`.
+- **RootNamespace vs AssemblyName**: C# forbids a digit-leading namespace segment, so `RootNamespace` is `NavisworksExport.Glb2026` / `NavisworksExport.AutoCad2026` while `AssemblyName` (DLL + deploy folder) stays `NavisworksExport.Glb.2026` / `NavisworksExport.AutoCad.2026`.
 - **Stub source of truth**: copy shape from `NavisworksExport.AutoCad/AutoCadExportCommand.cs`, not from the S-01 `GlbExportCommand`.
 - **Debug launch**: Visual Studio external program = `$(NavisworksInstallDir2026)Roamer.exe` for the 2026 projects.
 
@@ -77,7 +78,7 @@ Add `NavisworksInstallDir2026`, two empty-of-logic `net48`/x64 plugin projects w
 
 **Intent**: Minimal loadable plugin shell for the future S-03 GLB command on Manage 2026 — independent assembly so it cannot collide with the 2023 GLB plugin folder.
 
-**Contract**: SDK-style, `TargetFramework=net48`, `PlatformTarget=x64`, `Nullable=enable`, `AssemblyName`/`RootNamespace` = `NavisworksExport.Glb.2026`. Reference `System.Windows.Forms`. Reference `Autodesk.Navisworks.Api` via `HintPath="$(NavisworksInstallDir2026)Autodesk.Navisworks.Api.dll"` with `Private=False`, `SpecificVersion=False`, conditioned on `Exists(...)` **or** unconditional HintPath such that a missing install fails the build (no `NavisworksAPIdlls*` PackageReference). Post-build `DeployToNavisworksPlugins` → `$(NavisworksInstallDir2026)Plugins\$(AssemblyName)\` copying `$(TargetPath)` with `OverwriteReadOnlyFiles="true"` and `ContinueOnError="WarnAndContinue"` on MakeDir/Copy (no `RemoveDir`).
+**Contract**: SDK-style, `TargetFramework=net48`, `PlatformTarget=x64`, `Nullable=enable`, `AssemblyName` = `NavisworksExport.Glb.2026`, `RootNamespace` = `NavisworksExport.Glb2026`. Reference `System.Windows.Forms`. Reference `Autodesk.Navisworks.Api` via `HintPath="$(NavisworksInstallDir2026)Autodesk.Navisworks.Api.dll"` with `Private=False`, `SpecificVersion=False`, conditioned on `Exists(...)` **or** unconditional HintPath such that a missing install fails the build (no `NavisworksAPIdlls*` PackageReference). Post-build `DeployToNavisworksPlugins` → `$(NavisworksInstallDir2026)Plugins\$(AssemblyName)\` copying `$(TargetPath)` with `OverwriteReadOnlyFiles="true"` and `ContinueOnError="WarnAndContinue"` on MakeDir/Copy (no `RemoveDir`).
 
 #### 3. AutoCAD 2026 plugin project
 
@@ -85,7 +86,7 @@ Add `NavisworksInstallDir2026`, two empty-of-logic `net48`/x64 plugin projects w
 
 **Intent**: Same loadable shell for the future S-04 AutoCAD command on Manage 2026.
 
-**Contract**: Identical shape to the GLB 2026 csproj, with `AssemblyName`/`RootNamespace` = `NavisworksExport.AutoCad.2026`.
+**Contract**: Identical shape to the GLB 2026 csproj, with `AssemblyName` = `NavisworksExport.AutoCad.2026`, `RootNamespace` = `NavisworksExport.AutoCad2026`.
 
 #### 4. Solution membership
 
