@@ -4,17 +4,9 @@
     <TargetFramework>net48</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <Nullable>enable</Nullable>
-    <AssemblyName>NavisworksExport.Glb</AssemblyName>
-    <RootNamespace>NavisworksExport.Glb</RootNamespace>
+    <AssemblyName>NavisworksExport.Geometry</AssemblyName>
+    <RootNamespace>NavisworksExport.Geometry</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\NavisworksExport.Geometry\NavisworksExport.Geometry.csproj" />
-  </ItemGroup>
 
   <!-- Prefer host-local API when Navisworks Manage 2023 is installed (target machine). -->
   <ItemGroup Condition="Exists('$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll')">
@@ -22,6 +14,17 @@
       <HintPath>$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.ComApi">
+      <HintPath>$(NavisworksInstallDir)Autodesk.Navisworks.ComApi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Interop.ComApi">
+      <HintPath>$(NavisworksInstallDir)Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
 
@@ -32,10 +35,5 @@
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
   </ItemGroup>
-
-  <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
-    <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
-  </Target>
 
 </Project>
