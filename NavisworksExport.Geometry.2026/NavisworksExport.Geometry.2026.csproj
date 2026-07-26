@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\NavisworksExport.Geometry\ExtractedFragment.cs" Link="ExtractedFragment.cs" />
     <Compile Include="..\NavisworksExport.Geometry\ExtractedTriangle.cs" Link="ExtractedTriangle.cs" />
     <Compile Include="..\NavisworksExport.Geometry\PrimitiveCallback.cs" Link="PrimitiveCallback.cs" />
     <Compile Include="..\NavisworksExport.Geometry\SelectionGeometryExtractor.cs" Link="SelectionGeometryExtractor.cs" />

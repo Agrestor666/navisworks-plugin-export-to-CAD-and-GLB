@@ -295,13 +295,13 @@ Prove the end-to-end flow inside Manage 2026 + AutoCAD, and align roadmap status
 
 #### Automated
 
-- [ ] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds with new Geometry types
-- [ ] 1.2 Geometry and Geometry.2026 both build; GLB `Extract` call sites still compile
-- [ ] 1.3 No ACadSharp types inside `NavisworksExport.Geometry*`
+- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds with new Geometry types
+- [x] 1.2 Geometry and Geometry.2026 both build; GLB `Extract` call sites still compile
+- [x] 1.3 No ACadSharp types inside `NavisworksExport.Geometry*`
 
 #### Manual
 
-- [ ] 1.4 No standalone host check this phase — grouping proven when Phase 2/4 consume `ExtractGrouped`
+- [x] 1.4 No standalone host check this phase — grouping proven when Phase 2/4 consume `ExtractGrouped`
 
 ### Phase 2: DWG writer + harness
 

@@ -18,12 +18,33 @@ namespace NavisworksExport.Geometry
 
         public IReadOnlyList<ExtractedTriangle> Extract(ModelItemCollection selection, Action<string>? log = null)
         {
+            var fragments = ExtractGrouped(selection, log);
+            if (fragments.Count == 0)
+            {
+                return Array.Empty<ExtractedTriangle>();
+            }
+
+            var result = new List<ExtractedTriangle>();
+            foreach (var fragment in fragments)
+            {
+                result.AddRange(fragment.Triangles);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Same extraction pipeline as <see cref="Extract"/>, but preserves fragment boundaries
+        /// so writers can emit one mesh (or chunked meshes) per fragment occurrence.
+        /// </summary>
+        public IReadOnlyList<ExtractedFragment> ExtractGrouped(ModelItemCollection selection, Action<string>? log = null)
+        {
             if (selection == null)
             {
                 throw new ArgumentNullException(nameof(selection));
             }
 
-            var result = new List<ExtractedTriangle>();
+            var result = new List<ExtractedFragment>();
             if (selection.Count == 0)
             {
                 return result;
@@ -39,6 +60,7 @@ namespace NavisworksExport.Geometry
             var pathCount = 0;
             var fragmentCount = 0;
             var skippedFragments = 0;
+            var triangleCount = 0;
             // Local-space triangles keyed by shared COM Geometry body (reference equality).
             // Fragment path.ArrayData identifies the instance (used for selection filtering);
             // the mesh body is shared across instances and is the correct GenerateSimplePrimitives dedup key.
@@ -97,10 +119,16 @@ namespace NavisworksExport.Geometry
                         }
                     }
 
+                    if (localTriangles.Count == 0)
+                    {
+                        continue;
+                    }
+
                     var matrix = ReadMatrix(frag.GetLocalToWorldMatrix());
+                    var worldTriangles = new List<ExtractedTriangle>(localTriangles.Count);
                     foreach (var local in localTriangles)
                     {
-                        result.Add(new ExtractedTriangle(
+                        worldTriangles.Add(new ExtractedTriangle(
                             Transform(local.V0, matrix),
                             Transform(local.V1, matrix),
                             Transform(local.V2, matrix),
@@ -111,11 +139,15 @@ namespace NavisworksExport.Geometry
                             local.C1,
                             local.C2));
                     }
+
+                    triangleCount += worldTriangles.Count;
+                    result.Add(new ExtractedFragment(worldTriangles));
                 }
             }
 
             log?.Invoke(
-                $"paths {pathCount}, fragments {fragmentCount} (skipped {skippedFragments}), triangles {result.Count}");
+                $"paths {pathCount}, fragments {fragmentCount} (skipped {skippedFragments}), " +
+                $"fragment groups {result.Count}, triangles {triangleCount}");
 
             return result;
         }

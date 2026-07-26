@@ -1,10 +1,10 @@
 ---
 change_id: export-selection-glb-2026
 title: Export selection to GLB on Navisworks Manage 2026 (PowerPoint 3D)
-status: implementing
+status: archived
 created: 2026-07-26
 updated: 2026-07-26
-archived_at: null
+archived_at: 2026-07-26T18:40:00Z
 ---
 
 ## Notes
