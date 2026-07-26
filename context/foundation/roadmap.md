@@ -34,7 +34,7 @@ Koordynator BIM nie ma prostego sposobu na przeniesienie **tylko zaznaczonej sel
 | S-02 | export-selection-autocad | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) i otworzyć go do dalszej pracy | F-01 | FR-004, FR-005, FR-006, FR-007, FR-008 | proposed |
 | F-02 | nw-plugin-scaffold-2026 | (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend | F-01 | NFR (host wave), Access Control | done |
 | S-03 | export-selection-glb-2026 | użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint | F-02, S-01 | US-01, FR-001, FR-002, FR-003, FR-007, FR-008 | done |
-| S-04 | export-selection-autocad-2026 | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy | F-02, S-02 | FR-004, FR-005, FR-006, FR-007, FR-008 | proposed |
+| S-04 | export-selection-autocad-2026 | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy | F-02 | FR-004, FR-005, FR-006, FR-007, FR-008 | in progress |
 
 ## Streams
 
@@ -43,8 +43,8 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 | Stream | Theme | Chain | Note |
 |---|---|---|---|
 | A | Host & GLB 2023 (north star) | `F-01` → `S-01` | Ścieżka walidacji MVP na Manage 2023. |
-| B | AutoCAD 2023 | `S-02` | Zależy od `F-01`; **odłożone** — nie planować przed falą 2026. |
-| C | Host & pluginy 2026 | `F-02` → `S-03` → `S-04` | Te same możliwości co Stream A/B; host Manage 2026. `S-04` czeka na `S-02`. |
+| B | AutoCAD 2023 | `S-02` | Zależy od `F-01`; **odłożone** jako reverse-port po proof na 2026 (`S-04`). |
+| C | Host & pluginy 2026 | `F-02` → `S-03` → `S-04` | Te same możliwości co Stream A/B; host Manage 2026. AutoCAD proof = `S-04` first (nie blokowane na `S-02`). |
 
 ## Baseline
 
@@ -107,11 +107,11 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Change ID:** export-selection-autocad
 - **PRD refs:** FR-004, FR-005, FR-006, FR-007, FR-008
 - **Prerequisites:** F-01
-- **Parallel with:** S-01, F-02
+- **Parallel with:** —
 - **Blockers:** wspierana wersja AutoCAD dostępna do weryfikacji otwarcia pliku
 - **Unknowns:**
   - Brak sformalizowanej US-02 (AutoCAD) w PRD — Owner: user. Block: no.
-- **Risk:** Nadal w MVP Success Criteria, ale **świadomie odłożone** — najpierw fala hosta 2026 (F-02 → S-03). Risk: DWG vs DXF choice and geometry fidelity expand scope; keep to “opens in AutoCAD for further work”.
+- **Risk:** Nadal w MVP Success Criteria, ale **świadomie odłożone** jako reverse-port na Manage 2023 po proof ścieżki AutoCAD na 2026 (`S-04`). Prefer link/`DwgWriter` reuse z `NavisworksExport.AutoCad.2026`. Risk: DWG vs DXF choice and geometry fidelity expand scope; keep to “opens in AutoCAD for further work”.
 - **Status:** proposed
 
 ### S-03: Eksport selekcji do GLB na Navisworks Manage 2026
@@ -132,13 +132,12 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Outcome:** użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy
 - **Change ID:** export-selection-autocad-2026
 - **PRD refs:** FR-004, FR-005, FR-006, FR-007, FR-008
-- **Prerequisites:** F-02, S-02
+- **Prerequisites:** F-02
 - **Parallel with:** —
-- **Blockers:** wspierana wersja AutoCAD dostępna do weryfikacji otwarcia pliku
-- **Unknowns:**
-  - Zależy od dostarczenia S-02 na 2023 (świadomie odłożone) — Owner: user. Block: yes.
-- **Risk:** Mirror S-02 na host 2026; sequenced after S-02 so AutoCAD path is proven once before dual-host maintenance. Risk: skipping S-02 and porting AutoCAD only on 2026 doubles unknown surface (format + host).
-- **Status:** blocked
+- **Blockers:** wspierana wersja AutoCAD dostępna do weryfikacji otwarcia pliku; Navisworks Manage 2026 na stanowisku weryfikacji
+- **Unknowns:** —
+- **Risk:** 2026-first AutoCAD proof (PolyfaceMesh + ACadSharp) — odblokowane bez `S-02`. `S-02` wraca później jako reverse-port na Manage 2023. Risk: dual-host maintenance later if 2023 COM/API differs from proven 2026 path.
+- **Status:** in progress
 
 ## Backlog Handoff
 
@@ -146,10 +145,10 @@ Foundations below assume these are present and do NOT re-scaffold them.
 |---|---|---|---|---|
 | F-01 | nw-plugin-scaffold | Scaffold pluginu Navisworks Manage 2023 (loadable command host) | no | done / archived |
 | S-01 | export-selection-glb | Eksport selekcji do GLB (PowerPoint 3D) | no | done (implemented); archive when ready |
-| S-02 | export-selection-autocad | Eksport selekcji do AutoCAD (DWG/DXF) | no | **Odłożone** — nie ruszać przed falą 2026 |
-| F-02 | nw-plugin-scaffold-2026 | Scaffold pluginów Navisworks Manage 2026 (loadable command host) | yes | Run `/10x-plan nw-plugin-scaffold-2026` — odblokowuje S-03 |
+| S-02 | export-selection-autocad | Eksport selekcji do AutoCAD (DWG/DXF) | no | **Odłożone** — reverse-port po `S-04` |
+| F-02 | nw-plugin-scaffold-2026 | Scaffold pluginów Navisworks Manage 2026 (loadable command host) | no | done / archived |
 | S-03 | export-selection-glb-2026 | Eksport selekcji do GLB na Manage 2026 (PowerPoint 3D) | no | done — archived |
-| S-04 | export-selection-autocad-2026 | Eksport selekcji do AutoCAD na Manage 2026 (DWG/DXF) | no | Blocked na S-02 |
+| S-04 | export-selection-autocad-2026 | Eksport selekcji do AutoCAD na Manage 2026 (DWG/DXF) | no | in progress (`context/changes/export-selection-autocad-2026/`) — nie blocked na S-02 |
 
 ## Open Roadmap Questions
 
@@ -166,7 +165,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Modyfikacja geometrii w Navisworks** — Why parked: PRD §Non-Goals; pluginy read-only.
 - **Dystrybucja komercyjna** — Why parked: PRD §Non-Goals; narzędzie wewnętrzne.
 - **CI/CD GitHub Actions na starcie** — Why parked: `main_goal: speed` + progressive disclosure; lokalny build względem hosta wystarczy do pierwszej walidacji S-01.
-- **S-02 AutoCAD na Manage 2023 (na teraz)** — Why parked temporarily: świadoma decyzja kolejności — najpierw F-02 → S-03; S-02 wraca przed S-04.
+- **S-02 AutoCAD na Manage 2023 (na teraz)** — Why parked temporarily: świadoma decyzja kolejności — AutoCAD proof najpierw na Manage 2026 (`S-04`); `S-02` wraca później jako reverse-port na 2023.
 
 ## Done
 

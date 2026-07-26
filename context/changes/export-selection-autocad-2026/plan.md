@@ -321,13 +321,13 @@ Prove the end-to-end flow inside Manage 2026 + AutoCAD, and align roadmap status
 
 #### Automated
 
-- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
-- [x] 3.2 AutoCad.2026 output folder includes plugin + ACadSharp/Geometry dependency DLLs
-- [x] 3.3 S-03 checklist landed: assembly resolver, NoInlining RunExport, temp log, ComApi reference, multi-DLL+PDB deploy
+- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds — 144de59
+- [x] 3.2 AutoCad.2026 output folder includes plugin + ACadSharp/Geometry dependency DLLs — 144de59
+- [x] 3.3 S-03 checklist landed: assembly resolver, NoInlining RunExport, temp log, ComApi reference, multi-DLL+PDB deploy — 144de59
 
 #### Manual
 
-- [x] 3.4 Command exercised in Phase 4 host matrix
+- [x] 3.4 Command exercised in Phase 4 host matrix — 144de59
 
 ### Phase 4: Host verification & roadmap hygiene
 

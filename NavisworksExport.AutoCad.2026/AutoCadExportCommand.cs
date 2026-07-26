@@ -1,8 +1,5 @@
 using System;
-using System.IO;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Windows.Forms;
 using Autodesk.Navisworks.Api.Plugins;
 using NavisworksExport.Geometry;
@@ -11,7 +8,7 @@ using NwApplication = Autodesk.Navisworks.Api.Application;
 namespace NavisworksExport.AutoCad2026
 {
     [Plugin("AutoCadExport2026", "NWXP", ToolTip = "Export selection to AutoCAD", DisplayName = "Export to AutoCAD")]
-    [AddInPlugin(AddInLocation.AddIn)]
+    [AddInPlugin(AddInLocation.AddIn, Icon = "Images\\autocad16.png", LargeIcon = "Images\\autocad32.png")]
     public class AutoCadExportCommand : AddInPlugin
     {
         private const string Caption = "Export to AutoCAD";
@@ -21,8 +18,7 @@ namespace NavisworksExport.AutoCad2026
             ExportLog.Write("Execute entered");
             try
             {
-                // The host does not probe the plugin folder for dependencies, so they must be
-                // resolvable before RunExport is JIT-compiled and its references are loaded.
+                // ModuleInitializer already installed the resolver; keep this for defense in depth.
                 PluginAssemblyResolver.Install();
                 return RunExport();
             }
@@ -95,7 +91,7 @@ namespace NavisworksExport.AutoCad2026
             }
 
             ExportLog.Write("write start");
-            DwgWriter.WriteDwg(fragments, filePath);
+            DwgWriter.WriteDwg(fragments, filePath, ExportLog.Write);
             ExportLog.Write("write done");
 
             MessageBox.Show(
@@ -109,89 +105,6 @@ namespace NavisworksExport.AutoCad2026
         private static void ShowError(string message)
         {
             MessageBox.Show(message, Caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        /// <summary>
-        /// Resolves this plugin's private dependencies (geometry twin, ACadSharp, …) from the folder
-        /// the plugin assembly was deployed to. Navisworks loads the plugin in a way that leaves that
-        /// folder out of the CLR probing path, so unresolved references would otherwise throw
-        /// <see cref="FileNotFoundException"/> when a referencing method is JIT-compiled.
-        /// </summary>
-        private static class PluginAssemblyResolver
-        {
-            private static int _installed;
-
-            public static void Install()
-            {
-                if (Interlocked.Exchange(ref _installed, 1) == 1)
-                {
-                    return;
-                }
-
-                var folder = PluginFolder();
-                ExportLog.Write("plugin folder = " + (folder ?? "<unknown>"));
-                if (string.IsNullOrEmpty(folder))
-                {
-                    return;
-                }
-
-                AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => Resolve(folder!, args);
-            }
-
-            private static Assembly? Resolve(string folder, ResolveEventArgs args)
-            {
-                try
-                {
-                    var simpleName = new AssemblyName(args.Name).Name;
-                    var candidate = Path.Combine(folder, simpleName + ".dll");
-                    if (!File.Exists(candidate))
-                    {
-                        return null;
-                    }
-
-                    ExportLog.Write($"resolved {simpleName} -> {candidate}");
-                    return Assembly.LoadFrom(candidate);
-                }
-                catch (Exception ex)
-                {
-                    ExportLog.Write($"resolve failed for {args.Name}: {ex.Message}");
-                    return null;
-                }
-            }
-
-            private static string? PluginFolder()
-            {
-                var assembly = typeof(AutoCadExportCommand).Assembly;
-                if (!string.IsNullOrEmpty(assembly.Location))
-                {
-                    return Path.GetDirectoryName(assembly.Location);
-                }
-
-                // Assemblies loaded from a byte array report an empty Location.
-                return string.IsNullOrEmpty(assembly.CodeBase)
-                    ? null
-                    : Path.GetDirectoryName(new Uri(assembly.CodeBase).LocalPath);
-            }
-        }
-
-        private static class ExportLog
-        {
-            public static readonly string LogPath =
-                Path.Combine(Path.GetTempPath(), "NavisworksExport.AutoCad.2026.log");
-
-            public static void Write(string message)
-            {
-                try
-                {
-                    File.AppendAllText(
-                        LogPath,
-                        $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  {message}{Environment.NewLine}");
-                }
-                catch
-                {
-                    // Diagnostics must never break the export.
-                }
-            }
         }
     }
 }

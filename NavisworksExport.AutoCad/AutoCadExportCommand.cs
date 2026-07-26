@@ -5,7 +5,7 @@ using NwApplication = Autodesk.Navisworks.Api.Application;
 namespace NavisworksExport.AutoCad
 {
     [Plugin("AutoCadExport", "NWXP", ToolTip = "Export selection to AutoCAD", DisplayName = "Export to AutoCAD")]
-    [AddInPlugin(AddInLocation.AddIn)]
+    [AddInPlugin(AddInLocation.AddIn, Icon = "Images\\autocad16.png", LargeIcon = "Images\\autocad32.png")]
     public class AutoCadExportCommand : AddInPlugin
     {
         public override int Execute(params string[] parameters)

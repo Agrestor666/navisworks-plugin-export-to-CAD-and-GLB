@@ -52,6 +52,10 @@ namespace NavisworksExport.Geometry
 
         public static Vec3 operator -(in Vec3 a, in Vec3 b) => new Vec3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
 
+        public static Vec3 operator +(in Vec3 a, in Vec3 b) => new Vec3(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+
+        public static Vec3 operator *(in Vec3 v, double scale) => new Vec3(v.X * scale, v.Y * scale, v.Z * scale);
+
         public static Vec3 Cross(in Vec3 a, in Vec3 b) => new Vec3(
             a.Y * b.Z - a.Z * b.Y,
             a.Z * b.X - a.X * b.Z,

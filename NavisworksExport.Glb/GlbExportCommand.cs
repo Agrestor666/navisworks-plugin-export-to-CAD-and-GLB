@@ -8,7 +8,7 @@ using NwApplication = Autodesk.Navisworks.Api.Application;
 namespace NavisworksExport.Glb
 {
     [Plugin("GlbExport", "NWXP", ToolTip = "Export selection to GLB", DisplayName = "Export to GLB")]
-    [AddInPlugin(AddInLocation.AddIn)]
+    [AddInPlugin(AddInLocation.AddIn, Icon = "Images\\glb16.png", LargeIcon = "Images\\glb32.png")]
     public class GlbExportCommand : AddInPlugin
     {
         private const string Caption = "Export to GLB";

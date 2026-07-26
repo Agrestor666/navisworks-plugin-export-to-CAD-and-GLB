@@ -87,6 +87,12 @@ namespace NavisworksExport.Geometry
 
                     fragmentCount++;
 
+                    // Resolve colour per path/fragment occurrence — do not bake it into the local
+                    // geometry cache, or every instance of a shared body would inherit the first hit.
+                    var fragmentColor = itemColor
+                        ?? ReadAppearanceColor(frag)
+                        ?? Rgba.Gray;
+
                     object? geometry = null;
                     if (geometryDedupSupported)
                     {
@@ -108,7 +114,9 @@ namespace NavisworksExport.Geometry
                     }
                     else
                     {
-                        callback.Reset(itemColor ?? ReadAppearanceColor(frag) ?? Rgba.Gray);
+                        // Fallback colour inside the callback is unused for export colouring (we
+                        // overwrite below) but keeps the DTO populated if a caller reads locals.
+                        callback.Reset(fragmentColor);
                         frag.GenerateSimplePrimitives(
                             ComApi.nwEVertexProperty.eNORMAL | ComApi.nwEVertexProperty.eCOLOR,
                             callback);
@@ -135,9 +143,9 @@ namespace NavisworksExport.Geometry
                             TransformNormal(local.N0, matrix),
                             TransformNormal(local.N1, matrix),
                             TransformNormal(local.N2, matrix),
-                            local.C0,
-                            local.C1,
-                            local.C2));
+                            fragmentColor,
+                            fragmentColor,
+                            fragmentColor));
                     }
 
                     triangleCount += worldTriangles.Count;
@@ -176,6 +184,7 @@ namespace NavisworksExport.Geometry
         /// <summary>
         /// Colour as currently displayed for the item (honours appearance overrides). Preferred over
         /// the COM material because it is what the user sees in the host.
+        /// Falls back through PermanentColor → OriginalColor when ActiveColor is missing.
         /// </summary>
         private static Rgba? ReadItemColor(ComApi.InwOaPath3 path)
         {
@@ -187,17 +196,51 @@ namespace NavisworksExport.Geometry
                     return null;
                 }
 
-                var color = geometry.ActiveColor;
-                return new Rgba(
-                    (float)color.R,
-                    (float)color.G,
-                    (float)color.B,
-                    (float)(1.0 - geometry.ActiveTransparency));
+                if (TryFromNwColor(geometry.ActiveColor, geometry.ActiveTransparency, out var active))
+                {
+                    return active;
+                }
+
+                if (TryFromNwColor(geometry.PermanentColor, geometry.PermanentTransparency, out var permanent))
+                {
+                    return permanent;
+                }
+
+                if (TryFromNwColor(geometry.OriginalColor, geometry.OriginalTransparency, out var original))
+                {
+                    return original;
+                }
+
+                return null;
             }
             catch
             {
                 return null;
             }
+        }
+
+        private static bool TryFromNwColor(
+            Autodesk.Navisworks.Api.Color color,
+            double transparency,
+            out Rgba rgba)
+        {
+            rgba = default;
+            if (color == null)
+            {
+                return false;
+            }
+
+            // Navisworks Color channels are 0..1 doubles.
+            var r = (float)color.R;
+            var g = (float)color.G;
+            var b = (float)color.B;
+            if (float.IsNaN(r) || float.IsNaN(g) || float.IsNaN(b))
+            {
+                return false;
+            }
+
+            rgba = new Rgba(r, g, b, (float)(1.0 - transparency));
+            return true;
         }
 
         private static Rgba? ReadAppearanceColor(ComApi.InwOaFragment3 frag)

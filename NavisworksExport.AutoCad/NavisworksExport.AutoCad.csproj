@@ -12,6 +12,11 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="Images\autocad16.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Images\autocad32.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
   <!-- Prefer host-local API when Navisworks Manage 2023 is installed (target machine). -->
   <ItemGroup Condition="Exists('$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll')">
     <Reference Include="Autodesk.Navisworks.Api">
@@ -30,8 +35,13 @@
   </ItemGroup>
 
   <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
+    <ItemGroup>
+      <_DeployIcons Include="$(TargetDir)Images\*.png" />
+    </ItemGroup>
     <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
+    <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)\Images" ContinueOnError="WarnAndContinue" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="@(_DeployIcons)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)\Images" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
   </Target>
 
 </Project>

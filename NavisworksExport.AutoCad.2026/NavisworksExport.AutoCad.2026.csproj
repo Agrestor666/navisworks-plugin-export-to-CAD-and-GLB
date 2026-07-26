@@ -14,6 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="..\NavisworksExport.AutoCad\Images\autocad16.png" Link="Images\autocad16.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\NavisworksExport.AutoCad\Images\autocad32.png" Link="Images\autocad32.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ACadSharp" Version="3.6.35" />
   </ItemGroup>
 
@@ -41,9 +46,12 @@
       <_DeployDlls Include="$(TargetDir)*.dll" Exclude="$(TargetDir)Autodesk.*.dll" />
       <!-- PDBs give line numbers in host-side stack traces. -->
       <_DeployDlls Include="$(TargetDir)*.pdb" />
+      <_DeployIcons Include="$(TargetDir)Images\*.png" />
     </ItemGroup>
     <MakeDir Directories="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
+    <MakeDir Directories="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)\Images" ContinueOnError="WarnAndContinue" />
     <Copy SourceFiles="@(_DeployDlls)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="@(_DeployIcons)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)\Images" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
   </Target>
 
 </Project>
