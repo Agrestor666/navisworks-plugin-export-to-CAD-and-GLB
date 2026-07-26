@@ -362,6 +362,10 @@ paket-files/
 # Phase 2 GlbWriter harness output (regenerate via tools/GlbWriterHarness)
 tools/GlbWriterHarness/*.glb
 
+# Phase 2 DwgWriter harness output (regenerate via tools/DwgWriterHarness)
+tools/DwgWriterHarness/*.dwg
+
+
 # Local deploy staging (copy into Navisworks Plugins\)
 /dist/
 

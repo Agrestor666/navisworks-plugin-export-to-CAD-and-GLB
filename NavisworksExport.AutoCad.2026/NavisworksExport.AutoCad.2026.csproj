@@ -13,6 +13,14 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ACadSharp" Version="3.6.35" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NavisworksExport.Geometry.2026\NavisworksExport.Geometry.2026.csproj" />
+  </ItemGroup>
+
   <!-- Manage 2026 host API only — install required; no NuGet fallback. -->
   <ItemGroup>
     <Reference Include="Autodesk.Navisworks.Api">
@@ -22,9 +30,15 @@
     </Reference>
   </ItemGroup>
 
+  <!-- Copy plugin + private deps (Geometry.2026, ACadSharp, …); skip Autodesk host assemblies. -->
   <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
+    <ItemGroup>
+      <_DeployDlls Include="$(TargetDir)*.dll" Exclude="$(TargetDir)Autodesk.*.dll" />
+      <!-- PDBs give line numbers in host-side stack traces. -->
+      <_DeployDlls Include="$(TargetDir)*.pdb" />
+    </ItemGroup>
     <MakeDir Directories="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="@(_DeployDlls)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
   </Target>
 
 </Project>

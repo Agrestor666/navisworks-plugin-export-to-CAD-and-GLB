@@ -295,27 +295,27 @@ Prove the end-to-end flow inside Manage 2026 + AutoCAD, and align roadmap status
 
 #### Automated
 
-- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds with new Geometry types
-- [x] 1.2 Geometry and Geometry.2026 both build; GLB `Extract` call sites still compile
-- [x] 1.3 No ACadSharp types inside `NavisworksExport.Geometry*`
+- [x] 1.1 `dotnet build NavisworksExportPlugins.sln` succeeds with new Geometry types — b886e85
+- [x] 1.2 Geometry and Geometry.2026 both build; GLB `Extract` call sites still compile — b886e85
+- [x] 1.3 No ACadSharp types inside `NavisworksExport.Geometry*` — b886e85
 
 #### Manual
 
-- [x] 1.4 No standalone host check this phase — grouping proven when Phase 2/4 consume `ExtractGrouped`
+- [x] 1.4 No standalone host check this phase — grouping proven when Phase 2/4 consume `ExtractGrouped` — b886e85
 
 ### Phase 2: DWG writer + harness
 
 #### Automated
 
-- [ ] 2.1 `dotnet build` AutoCad.2026 succeeds with ACadSharp restore
-- [ ] 2.2 `dotnet build tools/DwgWriterHarness` succeeds
-- [ ] 2.3 Harness writes a non-empty `.dwg` and exits 0
+- [x] 2.1 `dotnet build` AutoCad.2026 succeeds with ACadSharp restore
+- [x] 2.2 `dotnet build tools/DwgWriterHarness` succeeds
+- [x] 2.3 Harness writes a non-empty `.dwg` and exits 0
 
 #### Manual
 
-- [ ] 2.4 Harness DWG opens shaded/filled in AutoCAD or TrueView (or documented VPORT workaround)
-- [ ] 2.5 Distinct per-face colors visible on the harness cube
-- [ ] 2.6 Harness DWG opens with no import/recovery errors
+- [x] 2.4 Harness DWG opens shaded/filled in AutoCAD or TrueView (or documented VPORT workaround)
+- [x] 2.5 Distinct per-face colors visible on the harness cube
+- [x] 2.6 Harness DWG opens with no import/recovery errors
 
 ### Phase 3: Command wiring on AutoCad.2026
 
