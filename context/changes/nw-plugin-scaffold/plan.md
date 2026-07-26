@@ -313,16 +313,16 @@ This is a from-scratch reshape, not a data migration: the disposable webapi scaf
 
 #### Automated
 
-- [x] 1.1 `git rev-parse --is-inside-work-tree` succeeds
-- [x] 1.2 Obsolete scaffold files no longer exist on disk
+- [x] 1.1 `git rev-parse --is-inside-work-tree` succeeds — 418da57
+- [x] 1.2 Obsolete scaffold files no longer exist on disk — 418da57
 
 ### Phase 2: Plugin project scaffolding
 
 #### Automated
 
-- [ ] 2.1 `dotnet restore` succeeds for the solution
-- [ ] 2.2 `dotnet build NavisworksExportPlugins.sln` succeeds, producing net48 assemblies for both projects
-- [ ] 2.3 Build still exits 0 from a non-elevated terminal
+- [x] 2.1 `dotnet restore` succeeds for the solution
+- [x] 2.2 `dotnet build NavisworksExportPlugins.sln` succeeds, producing net48 assemblies for both projects
+- [x] 2.3 Build still exits 0 from a non-elevated terminal
 
 ### Phase 3: Command entry points
 

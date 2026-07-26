@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <AssemblyName>NavisworksExport.AutoCad</AssemblyName>
+    <RootNamespace>NavisworksExport.AutoCad</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <!-- Prefer host-local API when Navisworks Manage 2023 is installed (target machine). -->
+  <ItemGroup Condition="Exists('$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll')">
+    <Reference Include="Autodesk.Navisworks.Api">
+      <HintPath>$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Compile-time fallback when building on a machine without Navisworks installed. -->
+  <ItemGroup Condition="!Exists('$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll')">
+    <PackageReference Include="NavisworksAPIdlls2023" Version="1.2.2">
+      <PrivateAssets>all</PrivateAssets>
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
+    <RemoveDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" Condition="Exists('$(NavisworksInstallDir)Plugins\$(AssemblyName)')" ContinueOnError="WarnAndContinue" />
+    <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
+  </Target>
+
+</Project>
