@@ -5,7 +5,8 @@
     <PlatformTarget>x64</PlatformTarget>
     <Nullable>enable</Nullable>
     <AssemblyName>NavisworksExport.Glb.2026</AssemblyName>
-    <RootNamespace>NavisworksExport.Glb.2026</RootNamespace>
+    <!-- C# namespaces cannot use a digit-leading segment; assembly/folder stay *.2026. -->
+    <RootNamespace>NavisworksExport.Glb2026</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

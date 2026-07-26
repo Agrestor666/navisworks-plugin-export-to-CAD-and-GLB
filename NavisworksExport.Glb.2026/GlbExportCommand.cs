@@ -1,0 +1,18 @@
+using System.Windows.Forms;
+using Autodesk.Navisworks.Api.Plugins;
+using NwApplication = Autodesk.Navisworks.Api.Application;
+
+namespace NavisworksExport.Glb2026
+{
+    [Plugin("GlbExport2026", "NWXP", ToolTip = "Export selection to GLB", DisplayName = "Export to GLB")]
+    [AddInPlugin(AddInLocation.AddIn)]
+    public class GlbExportCommand : AddInPlugin
+    {
+        public override int Execute(params string[] parameters)
+        {
+            var count = NwApplication.ActiveDocument?.CurrentSelection?.SelectedItems?.Count ?? 0;
+            MessageBox.Show($"Selected items: {count}", "Export to GLB (2026 scaffold)");
+            return 0;
+        }
+    }
+}

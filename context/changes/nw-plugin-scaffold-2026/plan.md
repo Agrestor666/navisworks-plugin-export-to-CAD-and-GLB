@@ -247,24 +247,24 @@ Additive only. No migration of 2023 assemblies. Side-by-side install via distinc
 
 #### Automated
 
-- [x] 1.1 With Manage 2026 available, `dotnet build NavisworksExportPlugins.sln` succeeds and produces net48 assemblies for both `*.2026` projects
-- [x] 1.2 Build still exits 0 from a non-elevated terminal
-- [x] 1.3 Existing 2023 projects still build in the same solution
-- [x] 1.4 `Directory.Build.props` still defaults `NavisworksInstallDir` to Manage 2023
+- [x] 1.1 With Manage 2026 available, `dotnet build NavisworksExportPlugins.sln` succeeds and produces net48 assemblies for both `*.2026` projects — 2792c46
+- [x] 1.2 Build still exits 0 from a non-elevated terminal — 2792c46
+- [x] 1.3 Existing 2023 projects still build in the same solution — 2792c46
+- [x] 1.4 `Directory.Build.props` still defaults `NavisworksInstallDir` to Manage 2023 — 2792c46
 
 #### Manual
 
-- [x] 1.5 Neither new csproj contains a `NavisworksAPIdlls*` / third-party NuGet API PackageReference
+- [x] 1.5 Neither new csproj contains a `NavisworksAPIdlls*` / third-party NuGet API PackageReference — 2792c46
 
 ### Phase 2: Command entry points
 
 #### Automated
 
-- [ ] 2.1 `dotnet build` succeeds with both 2026 command classes compiled in
+- [x] 2.1 `dotnet build` succeeds with both 2026 command classes compiled in
 
 #### Manual
 
-- [ ] 2.2 Elevated build deploys both DLLs into `{NavisworksInstallDir2026}Plugins\<AssemblyName>\` with matching folder/DLL names
+- [x] 2.2 Elevated build deploys both DLLs into `{NavisworksInstallDir2026}Plugins\<AssemblyName>\` with matching folder/DLL names
 
 ### Phase 3: Host verification & foundation docs
 
