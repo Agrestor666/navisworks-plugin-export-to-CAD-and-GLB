@@ -320,19 +320,19 @@ This is a from-scratch reshape, not a data migration: the disposable webapi scaf
 
 #### Automated
 
-- [x] 2.1 `dotnet restore` succeeds for the solution
-- [x] 2.2 `dotnet build NavisworksExportPlugins.sln` succeeds, producing net48 assemblies for both projects
-- [x] 2.3 Build still exits 0 from a non-elevated terminal
+- [x] 2.1 `dotnet restore` succeeds for the solution — 692e139
+- [x] 2.2 `dotnet build NavisworksExportPlugins.sln` succeeds, producing net48 assemblies for both projects — 692e139
+- [x] 2.3 Build still exits 0 from a non-elevated terminal — 692e139
 
 ### Phase 3: Command entry points
 
 #### Automated
 
-- [ ] 3.1 `dotnet build` succeeds with both command classes compiled in
+- [x] 3.1 `dotnet build` succeeds with both command classes compiled in
 
 #### Manual
 
-- [ ] 3.2 Elevated build deploys both DLLs into `{NavisworksInstallDir}\Plugins\<AssemblyName>\` with matching folder/DLL names
+- [x] 3.2 Elevated build deploys both DLLs into `{NavisworksInstallDir}\Plugins\<AssemblyName>\` with matching folder/DLL names
 
 ### Phase 4: Host verification & docs
 
