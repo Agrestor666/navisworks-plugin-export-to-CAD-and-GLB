@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavisworksExport.Glb.2026",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavisworksExport.AutoCad.2026", "NavisworksExport.AutoCad.2026\NavisworksExport.AutoCad.2026.csproj", "{10A1E7C1-9AC9-4E5F-84BF-2E160F0A9F47}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NavisworksExport.Geometry.2026", "NavisworksExport.Geometry.2026\NavisworksExport.Geometry.2026.csproj", "{7ADF31EB-C441-4D1D-9687-5E5F35366811}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{10A1E7C1-9AC9-4E5F-84BF-2E160F0A9F47}.Release|x64.Build.0 = Release|x64
 		{10A1E7C1-9AC9-4E5F-84BF-2E160F0A9F47}.Release|x86.ActiveCfg = Release|x64
 		{10A1E7C1-9AC9-4E5F-84BF-2E160F0A9F47}.Release|x86.Build.0 = Release|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Debug|Any CPU.Build.0 = Debug|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Debug|x64.ActiveCfg = Debug|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Debug|x64.Build.0 = Debug|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Debug|x86.ActiveCfg = Debug|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Debug|x86.Build.0 = Debug|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Release|Any CPU.ActiveCfg = Release|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Release|Any CPU.Build.0 = Release|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Release|x64.ActiveCfg = Release|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Release|x64.Build.0 = Release|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Release|x86.ActiveCfg = Release|x64
+		{7ADF31EB-C441-4D1D-9687-5E5F35366811}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

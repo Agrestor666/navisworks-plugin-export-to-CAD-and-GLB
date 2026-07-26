@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <Nullable>enable</Nullable>
+    <AssemblyName>NavisworksExport.Geometry.2026</AssemblyName>
+    <RootNamespace>NavisworksExport.Geometry.2026</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\NavisworksExport.Geometry\ExtractedTriangle.cs" Link="ExtractedTriangle.cs" />
+    <Compile Include="..\NavisworksExport.Geometry\PrimitiveCallback.cs" Link="PrimitiveCallback.cs" />
+    <Compile Include="..\NavisworksExport.Geometry\SelectionGeometryExtractor.cs" Link="SelectionGeometryExtractor.cs" />
+  </ItemGroup>
+
+  <!-- Manage 2026 host API only — install required; no NuGet fallback. -->
+  <ItemGroup>
+    <Reference Include="Autodesk.Navisworks.Api">
+      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.Api.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.ComApi">
+      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.ComApi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Autodesk.Navisworks.Interop.ComApi">
+      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.Interop.ComApi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
+</Project>
