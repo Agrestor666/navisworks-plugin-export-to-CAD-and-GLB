@@ -333,12 +333,12 @@ Prove the end-to-end flow inside Manage 2026 + AutoCAD, and align roadmap status
 
 #### Manual
 
-- [ ] 4.1 Empty selection → error, no dialog, no file
-- [ ] 4.2 Composite/group selection exports all child geometry (not selective/partial)
-- [ ] 4.3 Geometry-bearing selection → DWG opens in AutoCAD shaded with colors; no import errors
-- [ ] 4.4 Zero-triangle selection → error; no file
-- [ ] 4.5 Cancel dialog → silent abort; no file
-- [ ] 4.6 Large/instanced selection completes; huge-fragment chunking does not crash
-- [ ] 4.7 Source Navisworks document unchanged after export
-- [ ] 4.8 Manage 2023 AutoCAD stub still loads and is unaffected
-- [ ] 4.9 `roadmap.md` reflects 2026-first AutoCAD sequencing (S-02 not a hard blocker)
+- [x] 4.1 Empty selection → error, no dialog, no file — 7cf8d45
+- [x] 4.2 Composite/group selection exports all child geometry (not selective/partial) — 7cf8d45
+- [x] 4.3 Geometry-bearing selection → DWG opens in AutoCAD shaded with colors; no import errors — 7cf8d45
+- [x] 4.4 Zero-triangle selection → error; no file — 7cf8d45
+- [x] 4.5 Cancel dialog → silent abort; no file — 7cf8d45
+- [x] 4.6 Large/instanced selection completes; huge-fragment chunking does not crash — 7cf8d45
+- [x] 4.7 Source Navisworks document unchanged after export — 7cf8d45
+- [x] 4.8 Manage 2023 AutoCAD stub still loads and is unaffected — 7cf8d45
+- [x] 4.9 `roadmap.md` reflects 2026-first AutoCAD sequencing (S-02 not a hard blocker) — 7cf8d45
