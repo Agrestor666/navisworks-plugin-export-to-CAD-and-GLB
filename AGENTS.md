@@ -1,22 +1,24 @@
 # Repository Guidelines
 
-Navisworks Manage 2023 desktop export plugins (GLB for PowerPoint 3D, AutoCAD DWG/DXF) in C# / .NET Framework 4.8. Two independent Add-In plugins share a root solution — see `@context/foundation/tech-stack.md` and `@context/foundation/prd.md`.
+Navisworks Manage desktop export plugins (GLB for PowerPoint 3D, AutoCAD DWG/DXF) in C# / .NET Framework 4.8. Manage **2023** is the MVP host; Manage **2026** twin Add-In projects share the same root solution — see `@context/foundation/tech-stack.md` and `@context/foundation/prd.md`.
 
 ## Hard rules
 
 - Export **current selection only** — never the whole model (`@context/foundation/prd.md`).
 - Plugins are **read-only** on the Navisworks document; do not mutate the source model.
-- MVP host is **Navisworks Manage 2023** only; 2025 is out of scope until v1.1.
+- MVP host is **Navisworks Manage 2023**; next host wave is **Manage 2026** (twin `*.2026` projects). **Manage 2025** is out of scope (parked — no install).
 - Empty selection → user-facing error; do not write an empty export file.
 - No cloud sync, auth, backend, or commercial packaging in MVP.
 - Preserve `context/` across reshapes; product docs live under `@context/foundation/`.
 
 ## Project structure
 
-- `NavisworksExportPlugins.sln` — solution entry point for both plugins.
-- `NavisworksExport.Glb/` — GLB export plugin (`AddInPlugin` command).
-- `NavisworksExport.AutoCad/` — AutoCAD DWG/DXF export plugin (`AddInPlugin` command).
-- `Directory.Build.props` — shared `NavisworksInstallDir` (default install path; override via env var of the same name).
+- `NavisworksExportPlugins.sln` — solution entry point for 2023 + 2026 plugins.
+- `NavisworksExport.Glb/` — GLB export plugin for Manage 2023 (`AddInPlugin` command).
+- `NavisworksExport.AutoCad/` — AutoCAD DWG/DXF export plugin for Manage 2023 (`AddInPlugin` command).
+- `NavisworksExport.Glb.2026/` — Manage 2026 twin of the GLB plugin (`AssemblyName` `NavisworksExport.Glb.2026`).
+- `NavisworksExport.AutoCad.2026/` — Manage 2026 twin of the AutoCAD plugin (`AssemblyName` `NavisworksExport.AutoCad.2026`).
+- `Directory.Build.props` — shared `NavisworksInstallDir` (Manage 2023) and `NavisworksInstallDir2026` (Manage 2026); override either via env/MSBuild property of the same name.
 - `@context/foundation/` — PRD, tech-stack, shape-notes (edit in place; see `@context/foundation/README.md`).
 - `@context/changes/` — per-change plans/research; archived work under `@context/archive/`.
 - `.cursor/skills/` and `.cursor/rules/` — agent workflows; not runtime code.
@@ -24,10 +26,11 @@ Navisworks Manage 2023 desktop export plugins (GLB for PowerPoint 3D, AutoCAD DW
 ## Build and development
 
 - `dotnet restore` — restore NuGet packages for the solution.
-- `dotnet build NavisworksExportPlugins.sln` — compile both `net48` / x64 plugin projects.
-- Prefer a machine with Navisworks Manage 2023 installed so `Autodesk.Navisworks.Api.dll` resolves via `HintPath` from `NavisworksInstallDir`. Without a local install, projects fall back to the `NavisworksAPIdlls2023` NuGet package for compile only.
-- Post-build deploy copies each DLL into `{NavisworksInstallDir}Plugins\<AssemblyName>\`. That path is under Program Files — use an elevated terminal/IDE for the copy to succeed. Non-elevated builds still exit 0 (deploy warns and continues).
-- To debug a command inside the host, launch external program `$(NavisworksInstallDir)Roamer.exe` from Visual Studio project debug settings.
+- `dotnet build NavisworksExportPlugins.sln` — compile `net48` / x64 plugin projects (2023 + 2026).
+- **2023 projects:** Prefer a machine with Navisworks Manage 2023 installed so `Autodesk.Navisworks.Api.dll` resolves via `HintPath` from `NavisworksInstallDir`. Without a local install, they fall back to the `NavisworksAPIdlls2023` NuGet package for compile only.
+- **2026 projects:** Require a local Manage 2026 install — HintPath from `NavisworksInstallDir2026` only (no NuGet API fallback). Missing install causes the build to fail on the API reference.
+- Post-build deploy copies each DLL into `{NavisworksInstallDir}Plugins\<AssemblyName>\` (2023) or `{NavisworksInstallDir2026}Plugins\<AssemblyName>\` (2026). Those paths are under Program Files — use an elevated terminal/IDE for the copy to succeed. Non-elevated builds still exit 0 (deploy warns and continues).
+- To debug a command inside the host, launch the matching host’s `Roamer.exe`: `$(NavisworksInstallDir)Roamer.exe` for 2023 projects, `$(NavisworksInstallDir2026)Roamer.exe` for 2026 projects.
 
 ## Coding style
 
@@ -37,7 +40,7 @@ Navisworks Manage 2023 desktop export plugins (GLB for PowerPoint 3D, AutoCAD DW
 
 ## Testing
 
-No test project or runner is configured yet. When adding tests, use a `*.Tests` project (or co-located tests) and document the single-test command here. Host-load verification is manual inside Navisworks Manage 2023.
+No test project or runner is configured yet. When adding tests, use a `*.Tests` project (or co-located tests) and document the single-test command here. Host-load verification is manual inside Navisworks Manage 2023 and Manage 2026 as applicable.
 
 ## Commits and PRs
 

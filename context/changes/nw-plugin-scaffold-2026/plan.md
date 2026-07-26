@@ -260,24 +260,24 @@ Additive only. No migration of 2023 assemblies. Side-by-side install via distinc
 
 #### Automated
 
-- [x] 2.1 `dotnet build` succeeds with both 2026 command classes compiled in
+- [x] 2.1 `dotnet build` succeeds with both 2026 command classes compiled in — bfc5645
 
 #### Manual
 
-- [x] 2.2 Elevated build deploys both DLLs into `{NavisworksInstallDir2026}Plugins\<AssemblyName>\` with matching folder/DLL names
+- [x] 2.2 Elevated build deploys both DLLs into `{NavisworksInstallDir2026}Plugins\<AssemblyName>\` with matching folder/DLL names — bfc5645
 
 ### Phase 3: Host verification & foundation docs
 
 #### Automated
 
-- [ ] 3.1 `AGENTS.md` documents `NavisworksInstallDir2026` + `*.2026` projects; 2025 is not the next in-scope host
-- [ ] 3.2 `prd.md` names Manage 2026 as next host wave (MVP remains 2023); no 2025-as-v1.1 promise
-- [ ] 3.3 `tech-stack.md` acknowledges 2026 twin host projects
+- [x] 3.1 `AGENTS.md` documents `NavisworksInstallDir2026` + `*.2026` projects; 2025 is not the next in-scope host
+- [x] 3.2 `prd.md` names Manage 2026 as next host wave (MVP remains 2023); no 2025-as-v1.1 promise
+- [x] 3.3 `tech-stack.md` acknowledges 2026 twin host projects
 
 #### Manual
 
-- [ ] 3.4 Manage 2026 launches normally after 2026 plugin deploy
-- [ ] 3.5 Both 2026 commands appear under Add-Ins
-- [ ] 3.6 Each command shows correct count with a selection
-- [ ] 3.7 Each command shows “Selected items: 0” on empty selection without crashing
-- [ ] 3.8 Document unsaved-changes indicator unchanged after either command
+- [x] 3.4 Manage 2026 launches normally after 2026 plugin deploy
+- [x] 3.5 Both 2026 commands appear under Add-Ins
+- [x] 3.6 Each command shows correct count with a selection
+- [x] 3.7 Each command shows “Selected items: 0” on empty selection without crashing
+- [x] 3.8 Document unsaved-changes indicator unchanged after either command
