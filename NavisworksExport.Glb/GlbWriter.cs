@@ -43,20 +43,23 @@ namespace NavisworksExport.Glb
 
             var scale = (float)unitsToMetersScale;
             // BaseColor white so COLOR_0 vertex colors show through (SharpGLTF multiplies them).
+            // Metallic must be forced to 0: glTF defaults it to 1, which renders every surface black
+            // in viewers without an environment map (PowerPoint included).
             var material = new MaterialBuilder("vertex-color")
                 .WithDoubleSide(true)
                 .WithMetallicRoughnessShader()
-                .WithBaseColor(Vector4.One);
+                .WithBaseColor(Vector4.One)
+                .WithMetallicRoughness(0f, 0.8f);
 
-            var mesh = new MeshBuilder<VertexPosition, VertexColor1, VertexEmpty>("selection");
+            var mesh = new MeshBuilder<VertexPositionNormal, VertexColor1, VertexEmpty>("selection");
             var prim = mesh.UsePrimitive(material);
 
             foreach (var tri in triangles)
             {
                 prim.AddTriangle(
-                    ToVertex(tri.V0, tri.C0, scale),
-                    ToVertex(tri.V1, tri.C1, scale),
-                    ToVertex(tri.V2, tri.C2, scale));
+                    ToVertex(tri.V0, tri.N0, tri.C0, scale),
+                    ToVertex(tri.V1, tri.N1, tri.C1, scale),
+                    ToVertex(tri.V2, tri.N2, tri.C2, scale));
             }
 
             var scene = new SceneBuilder();
@@ -66,15 +69,22 @@ namespace NavisworksExport.Glb
 
         /// <summary>
         /// Navisworks Z-up → glTF Y-up (right-handed): (x, y, z) → (x, z, -y), then scale to meters.
+        /// The same swap applies to the normal, which is a rotation and so stays unit length.
         /// </summary>
-        private static (VertexPosition, VertexColor1) ToVertex(in Vec3 nw, in Rgba color, float scale)
+        private static (VertexPositionNormal, VertexColor1) ToVertex(
+            in Vec3 nw, in Vec3 normal, in Rgba color, float scale)
         {
-            var position = new VertexPosition(
-                (float)(nw.X * scale),
-                (float)(nw.Z * scale),
-                (float)(-nw.Y * scale));
+            var geometry = new VertexPositionNormal(
+                new Vector3(
+                    (float)(nw.X * scale),
+                    (float)(nw.Z * scale),
+                    (float)(-nw.Y * scale)),
+                new Vector3(
+                    (float)normal.X,
+                    (float)normal.Z,
+                    (float)-normal.Y));
             var vertexColor = new VertexColor1(new Vector4(color.R, color.G, color.B, color.A));
-            return (position, vertexColor);
+            return (geometry, vertexColor);
         }
     }
 }

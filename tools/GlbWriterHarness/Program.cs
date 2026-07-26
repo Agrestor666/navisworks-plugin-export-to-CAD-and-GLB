@@ -72,8 +72,9 @@ namespace GlbWriterHarness
             in Vec3 a, in Vec3 b, in Vec3 c, in Vec3 d,
             in Rgba color)
         {
-            list.Add(new ExtractedTriangle(a, b, c, color, color, color));
-            list.Add(new ExtractedTriangle(a, c, d, color, color, color));
+            var n = Vec3.Cross(b - a, c - a).NormalizedOr(Vec3.UnitZ);
+            list.Add(new ExtractedTriangle(a, b, c, n, n, n, color, color, color));
+            list.Add(new ExtractedTriangle(a, c, d, n, n, n, color, color, color));
         }
     }
 }

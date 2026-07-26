@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.ComApi;
 using ComApi = Autodesk.Navisworks.Api.Interop.ComApi;
@@ -15,7 +16,7 @@ namespace NavisworksExport.Geometry
     {
         private static readonly IntArrayComparer PathComparer = new IntArrayComparer();
 
-        public IReadOnlyList<ExtractedTriangle> Extract(ModelItemCollection selection)
+        public IReadOnlyList<ExtractedTriangle> Extract(ModelItemCollection selection, Action<string>? log = null)
         {
             if (selection == null)
             {
@@ -28,16 +29,29 @@ namespace NavisworksExport.Geometry
                 return result;
             }
 
-            var comSelection = ComApiBridge.ToInwOpSelection(selection);
+            // Ensure COM bridge is initialized before crossing the managed/COM boundary.
+            _ = ComApiBridge.State;
+
+            var leaves = GeometryLeaves(selection);
+            log?.Invoke($"selection {selection.Count} item(s) -> {leaves.Count} geometry leaf/leaves");
+
+            var comSelection = ComApiBridge.ToInwOpSelection(leaves);
+            var pathCount = 0;
+            var fragmentCount = 0;
+            var skippedFragments = 0;
             // Local-space triangles keyed by shared COM Geometry body (reference equality).
             // Fragment path.ArrayData identifies the instance (used for selection filtering);
             // the mesh body is shared across instances and is the correct GenerateSimplePrimitives dedup key.
             var localCache = new Dictionary<object, IReadOnlyList<LocalTriangle>>(new ReferenceEqualityComparer());
             var callback = new PrimitiveCallback();
+            // Manage 2026 raises "Not implemented" for InwOaFragment3.Geometry; dedup is then skipped.
+            var geometryDedupSupported = true;
 
             foreach (ComApi.InwOaPath3 path in comSelection.Paths())
             {
+                pathCount++;
                 var pathKey = ToIntArray(path.ArrayData);
+                var itemColor = ReadItemColor(path);
 
                 foreach (ComApi.InwOaFragment3 frag in path.Fragments())
                 {
@@ -45,10 +59,25 @@ namespace NavisworksExport.Geometry
                     var fragPathKey = ToIntArray(frag.path.ArrayData);
                     if (!PathComparer.Equals(pathKey, fragPathKey))
                     {
+                        skippedFragments++;
                         continue;
                     }
 
-                    var geometry = frag.Geometry;
+                    fragmentCount++;
+
+                    object? geometry = null;
+                    if (geometryDedupSupported)
+                    {
+                        try
+                        {
+                            geometry = frag.Geometry;
+                        }
+                        catch (COMException)
+                        {
+                            geometryDedupSupported = false;
+                        }
+                    }
+
                     IReadOnlyList<LocalTriangle> localTriangles;
 
                     if (geometry != null && localCache.TryGetValue(geometry, out var cached))
@@ -57,8 +86,7 @@ namespace NavisworksExport.Geometry
                     }
                     else
                     {
-                        var fallback = ReadAppearanceColor(frag);
-                        callback.Reset(fallback);
+                        callback.Reset(itemColor ?? ReadAppearanceColor(frag) ?? Rgba.Gray);
                         frag.GenerateSimplePrimitives(
                             ComApi.nwEVertexProperty.eNORMAL | ComApi.nwEVertexProperty.eCOLOR,
                             callback);
@@ -76,6 +104,9 @@ namespace NavisworksExport.Geometry
                             Transform(local.V0, matrix),
                             Transform(local.V1, matrix),
                             Transform(local.V2, matrix),
+                            TransformNormal(local.N0, matrix),
+                            TransformNormal(local.N1, matrix),
+                            TransformNormal(local.N2, matrix),
                             local.C0,
                             local.C1,
                             local.C2));
@@ -83,10 +114,61 @@ namespace NavisworksExport.Geometry
                 }
             }
 
+            log?.Invoke(
+                $"paths {pathCount}, fragments {fragmentCount} (skipped {skippedFragments}), triangles {result.Count}");
+
             return result;
         }
 
-        private static Rgba ReadAppearanceColor(ComApi.InwOaFragment3 frag)
+        /// <summary>
+        /// Expands the selection to the geometry-bearing nodes underneath it. A path to a composite
+        /// node yields fragments that belong to its children, and those are rejected by the
+        /// path-identity filter below — so without this step whole branches export as nothing.
+        /// </summary>
+        private static ModelItemCollection GeometryLeaves(ModelItemCollection selection)
+        {
+            var seen = new HashSet<ModelItem>();
+            var leaves = new ModelItemCollection();
+            foreach (var item in selection.DescendantsAndSelf)
+            {
+                if (item.HasGeometry && seen.Add(item))
+                {
+                    leaves.Add(item);
+                }
+            }
+
+            // Nothing recognisable as geometry: let the original selection speak for itself.
+            return leaves.Count > 0 ? leaves : selection;
+        }
+
+        /// <summary>
+        /// Colour as currently displayed for the item (honours appearance overrides). Preferred over
+        /// the COM material because it is what the user sees in the host.
+        /// </summary>
+        private static Rgba? ReadItemColor(ComApi.InwOaPath3 path)
+        {
+            try
+            {
+                var geometry = ComApiBridge.ToModelItem(path)?.Geometry;
+                if (geometry == null)
+                {
+                    return null;
+                }
+
+                var color = geometry.ActiveColor;
+                return new Rgba(
+                    (float)color.R,
+                    (float)color.G,
+                    (float)color.B,
+                    (float)(1.0 - geometry.ActiveTransparency));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static Rgba? ReadAppearanceColor(ComApi.InwOaFragment3 frag)
         {
             try
             {
@@ -103,10 +185,10 @@ namespace NavisworksExport.Geometry
             }
             catch
             {
-                // Fall through to gray.
+                // Fall through to the caller's default.
             }
 
-            return Rgba.Gray;
+            return null;
         }
 
         private static double[] ReadMatrix(ComApi.InwLTransform3f transform)
@@ -123,19 +205,36 @@ namespace NavisworksExport.Geometry
         }
 
         /// <summary>
-        /// Applies a row-major 4x4 local-to-world matrix (Navisworks COM layout).
+        /// Applies a 4x4 local-to-world matrix. Navisworks COM stores it column-major, so the
+        /// translation lives at indices 12/13/14 and each basis vector is strided by four.
         /// </summary>
         private static Vec3 Transform(in Vec3 point, double[] m)
         {
             return new Vec3(
-                m[0] * point.X + m[1] * point.Y + m[2] * point.Z + m[3],
-                m[4] * point.X + m[5] * point.Y + m[6] * point.Z + m[7],
-                m[8] * point.X + m[9] * point.Y + m[10] * point.Z + m[11]);
+                m[0] * point.X + m[4] * point.Y + m[8] * point.Z + m[12],
+                m[1] * point.X + m[5] * point.Y + m[9] * point.Z + m[13],
+                m[2] * point.X + m[6] * point.Y + m[10] * point.Z + m[14]);
         }
 
-        private static int[] ToIntArray(object arrayData)
+        /// <summary>
+        /// Rotates a normal into world space: the 3x3 part only, no translation. Fragment transforms
+        /// are rigid, so the inverse transpose the general case would need is unnecessary here.
+        /// </summary>
+        private static Vec3 TransformNormal(in Vec3 normal, double[] m)
         {
-            var array = (Array)arrayData;
+            return new Vec3(
+                m[0] * normal.X + m[4] * normal.Y + m[8] * normal.Z,
+                m[1] * normal.X + m[5] * normal.Y + m[9] * normal.Z,
+                m[2] * normal.X + m[6] * normal.Y + m[10] * normal.Z).NormalizedOr(Vec3.UnitZ);
+        }
+
+        private static int[] ToIntArray(object? arrayData)
+        {
+            if (arrayData is not Array array)
+            {
+                return Array.Empty<int>();
+            }
+
             var lo = array.GetLowerBound(0);
             var hi = array.GetUpperBound(0);
             var result = new int[hi - lo + 1];

@@ -38,6 +38,18 @@ Navisworks Manage desktop export plugins (GLB for PowerPoint 3D, AutoCAD DWG/DXF
 - Prefer `AddInPlugin` command entry points; keep plugins independent until real shared logic appears.
 - Put durable decisions in foundation docs via `@`-references; do not duplicate long specs in code comments.
 
+## Manage 2026 plugin checklist
+
+When wiring or porting a `*.2026` export command, read `@context/foundation/lessons.md` first (S-03 GLB pitfalls). Minimum for every 2026 Add-In that references private DLLs:
+
+1. **`PluginAssemblyResolver`** in `Execute` before any JIT of writer/geometry types — copy from `NavisworksExport.Glb.2026/GlbExportCommand.cs`.
+2. **`Execute` → `[NoInlining] RunExport`** + try/catch + temp-file log (`%TEMP%\NavisworksExport.<Plugin>.2026.log`).
+3. **Multi-DLL deploy** — post-build copies all `*.dll` + `*.pdb` except `Autodesk.*.dll` into `{NavisworksInstallDir2026}Plugins\<AssemblyName>\` (elevated build required).
+4. **Explicit `Autodesk.Navisworks.ComApi` reference** when the command uses geometry extraction.
+5. **Shared geometry** — COM callback is already `public`/`[ComVisible]`; matrix, leaf expansion, and 2026 `frag.Geometry` guards live in linked `NavisworksExport.Geometry` source — do not reimplement or bypass them in new extract APIs.
+
+Format-specific notes (axis swap, materials, DWG viewport shading) belong in the change plan, not here.
+
 ## Testing
 
 No test project or runner is configured yet. When adding tests, use a `*.Tests` project (or co-located tests) and document the single-test command here. Host-load verification is manual inside Navisworks Manage 2023 and Manage 2026 as applicable.

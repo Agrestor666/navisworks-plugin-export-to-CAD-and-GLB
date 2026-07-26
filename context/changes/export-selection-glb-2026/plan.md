@@ -250,26 +250,26 @@ Additive only. No changes to 2023 assemblies, no data migration. `NavisworksExpo
 
 #### Automated
 
-- [x] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the `Geometry.2026` project reference resolved
-- [x] 2.2 2023's `NavisworksExport.Glb` still builds unaffected
+- [x] 2.1 `dotnet build NavisworksExportPlugins.sln` succeeds with `SharpGLTF.Toolkit` restored and the `Geometry.2026` project reference resolved — d5dee34
+- [x] 2.2 2023's `NavisworksExport.Glb` still builds unaffected — d5dee34
 
 #### Manual
 
-- [x] 2.3 No standalone check — deploy-target correctness confirmed in Phase 4
+- [x] 2.3 No standalone check — deploy-target correctness confirmed in Phase 4 — d5dee34
 
 ### Phase 3: Command wiring
 
 #### Automated
 
-- [ ] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
+- [x] 3.1 `dotnet build NavisworksExportPlugins.sln` succeeds
 
 #### Manual
 
-- [ ] 3.2 Empty selection → error, no dialog, no file
-- [ ] 3.3 Non-empty selection → dialog, file written, success message
-- [ ] 3.4 Zero-triangle non-empty selection → same error pattern as empty selection
-- [ ] 3.5 Save dialog cancel → silent abort, no error, no file
-- [ ] 3.6 Source document unchanged after export
+- [x] 3.2 Empty selection → error, no dialog, no file
+- [x] 3.3 Non-empty selection → dialog, file written, success message
+- [x] 3.4 Zero-triangle non-empty selection → same error pattern as empty selection
+- [x] 3.5 Save dialog cancel → silent abort, no error, no file
+- [x] 3.6 Source document unchanged after export
 
 ### Phase 4: Host verification & roadmap fix
 
@@ -280,10 +280,10 @@ Additive only. No changes to 2023 assemblies, no data migration. `NavisworksExpo
 
 #### Manual
 
-- [ ] 4.3 "Export to GLB" appears under Add-Ins and runs against a real selection on Manage 2026
-- [ ] 4.4 Empty selection on 2026 → error, no dialog, no file (live confirmation)
-- [ ] 4.5 Resulting `.glb` renders correctly and interactively in PowerPoint
-- [ ] 4.6 Large/instanced selection exports without hanging on Manage 2026
+- [x] 4.3 "Export to GLB" appears under Add-Ins and runs against a real selection on Manage 2026
+- [x] 4.4 Empty selection on 2026 → error, no dialog, no file (live confirmation)
+- [x] 4.5 Resulting `.glb` renders correctly and interactively in PowerPoint
+- [x] 4.6 Large/instanced selection exports without hanging on Manage 2026
 - [ ] 4.7 Zero-triangle selection → same error pattern, live on 2026
-- [ ] 4.8 Original Manage 2026 document unchanged after the full run
+- [x] 4.8 Original Manage 2026 document unchanged after the full run
 - [ ] 4.9 Manage 2023 plugin still loads and works unaffected (regression sanity)

@@ -32,12 +32,19 @@
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
+    <Reference Include="Autodesk.Navisworks.ComApi">
+      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.ComApi.dll</HintPath>
+      <Private>False</Private>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
   </ItemGroup>
 
   <!-- Copy plugin + private deps (Geometry.2026, SharpGLTF, …); skip Autodesk host assemblies. -->
   <Target Name="DeployToNavisworksPlugins" AfterTargets="Build">
     <ItemGroup>
       <_DeployDlls Include="$(TargetDir)*.dll" Exclude="$(TargetDir)Autodesk.*.dll" />
+      <!-- PDBs give line numbers in host-side stack traces. -->
+      <_DeployDlls Include="$(TargetDir)*.pdb" />
     </ItemGroup>
     <MakeDir Directories="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
     <Copy SourceFiles="@(_DeployDlls)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
