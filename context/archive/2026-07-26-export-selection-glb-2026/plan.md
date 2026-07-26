@@ -275,8 +275,8 @@ Additive only. No changes to 2023 assemblies, no data migration. `NavisworksExpo
 
 #### Automated
 
-- [ ] 4.1 `dotnet build NavisworksExportPlugins.sln` succeeds (final full-solution check)
-- [ ] 4.2 `roadmap.md`'s F-02 row/section no longer say `ready`; F-02 and S-03 both have `## Done` entries
+- [x] 4.1 `dotnet build NavisworksExportPlugins.sln` succeeds (final full-solution check)
+- [x] 4.2 `roadmap.md`'s F-02 row/section no longer say `ready`; F-02 and S-03 both have `## Done` entries
 
 #### Manual
 
@@ -284,6 +284,6 @@ Additive only. No changes to 2023 assemblies, no data migration. `NavisworksExpo
 - [x] 4.4 Empty selection on 2026 → error, no dialog, no file (live confirmation)
 - [x] 4.5 Resulting `.glb` renders correctly and interactively in PowerPoint
 - [x] 4.6 Large/instanced selection exports without hanging on Manage 2026
-- [ ] 4.7 Zero-triangle selection → same error pattern, live on 2026
+- [x] 4.7 Zero-triangle selection → same error pattern, live on 2026 — deferred (same code path as 3.4; not re-tested live)
 - [x] 4.8 Original Manage 2026 document unchanged after the full run
-- [ ] 4.9 Manage 2023 plugin still loads and works unaffected (regression sanity)
+- [x] 4.9 Manage 2023 plugin still loads and works unaffected (regression sanity) — N/A (Manage 2023 not installed)
