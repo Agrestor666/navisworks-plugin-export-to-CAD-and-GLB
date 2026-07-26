@@ -338,12 +338,12 @@ This is a from-scratch reshape, not a data migration: the disposable webapi scaf
 
 #### Automated
 
-- [x] 4.1 `AGENTS.md` no longer references `.bootstrap-scaffold.csproj`, `Program.cs`, or the weatherforecast sample
+- [x] 4.1 `AGENTS.md` no longer references `.bootstrap-scaffold.csproj`, `Program.cs`, or the weatherforecast sample — 32204dd
 
 #### Manual
 
-- [x] 4.2 Navisworks Manage 2023 launches normally after deploy
-- [x] 4.3 Both commands appear under the Add-Ins tab
-- [x] 4.4 Each command shows the correct selected-item count with a selection made
-- [x] 4.5 Each command shows "Selected items: 0" on an empty selection without crashing
-- [x] 4.6 Document's unsaved-changes indicator is unchanged after running either command
+- [x] 4.2 Navisworks Manage 2023 launches normally after deploy — 32204dd
+- [x] 4.3 Both commands appear under the Add-Ins tab — 32204dd
+- [x] 4.4 Each command shows the correct selected-item count with a selection made — 32204dd
+- [x] 4.5 Each command shows "Selected items: 0" on an empty selection without crashing — 32204dd
+- [x] 4.6 Document's unsaved-changes indicator is unchanged after running either command — 32204dd
