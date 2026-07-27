@@ -213,14 +213,14 @@ Prove real Manage 2026 elbows look acceptably smooth in AutoCAD shaded view; con
 
 #### Automated
 
-- [x] 2.1 After any Phase 2 code tune: `dotnet build NavisworksExportPlugins.sln` succeeds
-- [x] 2.2 After any Phase 2 code tune: harness exit 0 and bare GetTypes OK
-- [x] 2.3 If no tune: re-run harness once after deploy build (Phase 1 results still stand)
+- [x] 2.1 After any Phase 2 code tune: `dotnet build NavisworksExportPlugins.sln` succeeds — 6df8ae0
+- [x] 2.2 After any Phase 2 code tune: harness exit 0 and bare GetTypes OK — 6df8ae0
+- [x] 2.3 If no tune: re-run harness once after deploy build (Phase 1 results still stand) — 6df8ae0
 
 #### Manual
 
-- [x] 2.4 Manage 2026: AutoCAD export command visible on ribbon (plugin loaded)
-- [x] 2.5 Export elbow/bend → AutoCAD shaded: bend looks smooth (not stacked prism panels)
-- [x] 2.6 Export straight pipe → shaded OK; wireframe barrel not erased
-- [x] 2.7 Export mixed selection → opens; elbows smooth; no one-sided refine artifacts
-- [x] 2.8 Source Navisworks document unchanged after exports
+- [x] 2.4 Manage 2026: AutoCAD export command visible on ribbon (plugin loaded) — 6df8ae0
+- [x] 2.5 Export elbow/bend → AutoCAD shaded: bend looks smooth (not stacked prism panels) — 6df8ae0
+- [x] 2.6 Export straight pipe → shaded OK; wireframe barrel not erased — 6df8ae0
+- [x] 2.7 Export mixed selection → opens; elbows smooth; no one-sided refine artifacts — 6df8ae0
+- [x] 2.8 Source Navisworks document unchanged after exports — 6df8ae0
