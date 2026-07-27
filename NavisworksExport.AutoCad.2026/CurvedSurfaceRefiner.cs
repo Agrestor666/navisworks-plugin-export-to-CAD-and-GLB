@@ -8,8 +8,15 @@ namespace NavisworksExport.AutoCad2026
 {
     /// <summary>
     /// Splits triangles across curved surfaces so a normal-less PolyfaceMesh still reads as round.
+    /// Always invoked from <see cref="DwgWriter.WriteDwg"/> (S-05 / always-on).
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// S-05 locked defaults below — do not change without failing Manage 2026 host visual acceptance
+    /// and re-running <c>tools/DwgWriterHarness</c> (elbow ≤12°) plus bare GetTypes on the AutoCAD
+    /// 2026 plugin DLL. Nested <see cref="Midpoint"/> / <see cref="Corner"/> must stay primitive-only
+    /// (no Geometry valuetype fields) or the host's startup GetTypes drops the plugin.
+    /// </para>
     /// GLB can forward Navisworks' coarse tessellation untouched because glTF carries per-vertex
     /// normals and the viewer shades between them. A PolyfaceMesh stores no normals, so AutoCAD
     /// flat-shades every facet and an elbow tessellated into a handful of steps renders as a prism.
@@ -19,6 +26,8 @@ namespace NavisworksExport.AutoCad2026
     /// </remarks>
     internal static class CurvedSurfaceRefiner
     {
+        // --- S-05 locked defaults (tune only after host visual failure) ---
+
         /// <summary>
         /// Split an edge once its endpoint normals diverge by more than this. Each pass halves the
         /// angle, so the loop terminates on its own — a coarse elbow is refined several times while

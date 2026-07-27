@@ -9,12 +9,18 @@ using DwgWriter = NavisworksExport.AutoCad2026.DwgWriter;
 namespace DwgWriterHarness
 {
     /// <summary>
-    /// Host-free check for <see cref="DwgWriter"/>. Writes a pipe, a 90° elbow and a colored cube,
-    /// then reads the DWG back and verifies what AutoCAD would otherwise have to be opened to see:
-    /// entity colors survive, every face is wound outward, curved surfaces keep their edges, and no
-    /// facet is coarse enough to read as a flat panel under AutoCAD's flat shading.
+    /// Host-free check for <see cref="DwgWriter"/> (includes always-on <c>CurvedSurfaceRefiner</c>).
+    /// Writes a pipe, a 90° elbow and a colored cube, then reads the DWG back and verifies what
+    /// AutoCAD would otherwise have to be opened to see: entity colors survive, every face is wound
+    /// outward, curved surfaces keep their edges, and no facet is coarse enough to read as a flat
+    /// panel under AutoCAD's flat shading.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// S-05 automated contract: after refine, neighbouring elbow facets must meet at ≤
+    /// <see cref="MaxElbowFacetDegrees"/> (12°). Exit non-zero if the bar is breached. Synthetic
+    /// elbow stays deliberately coarse (<see cref="ElbowSegments"/> / <see cref="ElbowSteps"/>).
+    /// </para>
     /// Curved surfaces are the interesting case — a cube alone hides every defect, because its edges
     /// all meet at 90° and its facets are already consistently wound. The pipe and elbow are fed with
     /// deliberately alternating winding, the way Navisworks COM delivers it, so the writer's
@@ -30,8 +36,9 @@ namespace DwgWriterHarness
         private const int ElbowSteps = 6;
 
         /// <summary>
-        /// Largest angle between neighbouring facets the refined elbow may still have. Above roughly
-        /// this the flat-shaded steps are visible as bands rather than as a gradient.
+        /// S-05 automated acceptance bar: largest angle between neighbouring facets the refined elbow
+        /// may still have. Above this the flat-shaded steps read as bands rather than a gradient;
+        /// harness exits non-zero when breached.
         /// </summary>
         private const double MaxElbowFacetDegrees = 12.0;
 
@@ -226,9 +233,10 @@ namespace DwgWriterHarness
         }
 
         /// <summary>
-        /// The reported defect on bends: AutoCAD flat-shades a PolyfaceMesh, so a coarse elbow reads
+        /// S-05 elbow smoothness gate: AutoCAD flat-shades a PolyfaceMesh, so a coarse elbow reads
         /// as a stack of panels no matter how good the source normals were. The writer's refinement
-        /// pass has to bring neighbouring facets close enough together to pass for a gradient.
+        /// pass (always-on in WriteDwg) must bring neighbouring facets to ≤
+        /// <see cref="MaxElbowFacetDegrees"/>.
         /// </summary>
         private static bool CheckElbowSmoothness(List<PolyfaceMesh> meshes)
         {
@@ -242,13 +250,14 @@ namespace DwgWriterHarness
             if (worst > MaxElbowFacetDegrees)
             {
                 Console.WriteLine(
-                    $"  [FAIL] elbow: facets still meet at up to {worst:0.0}° " +
+                    $"  [FAIL] S-05 elbow: facets still meet at up to {worst:0.0}° " +
                     $"(want at most {MaxElbowFacetDegrees:0.0}°) — the bend shades as flat panels");
                 return false;
             }
 
             Console.WriteLine(
-                $"  [ok]   elbow: {mesh.Faces.Count} facets, none meeting at more than {worst:0.0}°");
+                $"  [ok]   S-05 elbow: {mesh.Faces.Count} facets, none meeting at more than {worst:0.0}° " +
+                $"(bar ≤{MaxElbowFacetDegrees:0.0}°)");
             return true;
         }
 
