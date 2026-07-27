@@ -1,10 +1,10 @@
 ---
 change_id: dwg-elbow-surface-refine
 title: Dwg elbow surface refine
-status: impl_reviewed
+status: archived
 created: 2026-07-26
 updated: 2026-07-27
-archived_at: null
+archived_at: 2026-07-27T07:30:42Z
 ---
 
 ## Notes

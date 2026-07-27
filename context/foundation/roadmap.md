@@ -164,7 +164,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 | F-02 | nw-plugin-scaffold-2026 | Scaffold pluginów Navisworks Manage 2026 (loadable command host) | no | done / archived |
 | S-03 | export-selection-glb-2026 | Eksport selekcji do GLB na Manage 2026 (PowerPoint 3D) | no | done — archived |
 | S-04 | export-selection-autocad-2026 | Eksport selekcji do AutoCAD na Manage 2026 (DWG/DXF) | no | done — archived |
-| S-05 | dwg-elbow-surface-refine | Wygładzanie kolanek / gięć w eksporcie DWG (Manage 2026) | no | done (implemented); archive when ready |
+| S-05 | dwg-elbow-surface-refine | Wygładzanie kolanek / gięć w eksporcie DWG (Manage 2026) | no | done / archived |
 
 ## Open Roadmap Questions
 
@@ -190,4 +190,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **F-02: (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend — bez pełnej logiki eksportu; ten sam układ co F-01, osobny target hosta.** — Archived 2026-07-26 → `context/archive/2026-07-26-nw-plugin-scaffold-2026/`. Lesson: —.
 - **S-03: użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-glb-2026/`. Lesson: Manage 2026 wymaga assembly resolver, column-major macierzy, rozwijania selekcji do liści — patrz `context/foundation/lessons.md`.
 - **S-04: użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-autocad-2026/`. Lesson: —.
-- **S-05: użytkownik może wyeksportować kolanka / gięcia rur do DWG tak, że w AutoCAD wyglądają jak gładkie powierzchnie krzywe, a nie wielościenne pryzmy** — Implemented 2026-07-27 (`context/changes/dwg-elbow-surface-refine/`); archive pending. Lesson: nested valuetypes w `CurvedSurfaceRefiner` muszą zostać primitive-only — patrz `context/foundation/lessons.md`.
+- **S-05: użytkownik może wyeksportować kolanka / gięcia rur do DWG tak, że w AutoCAD wyglądają jak gładkie powierzchnie krzywe, a nie wielościenne pryzmy** — Archived 2026-07-27 → `context/archive/2026-07-26-dwg-elbow-surface-refine/`. Lesson: nested valuetypes w `CurvedSurfaceRefiner` muszą zostać primitive-only — patrz `context/foundation/lessons.md`.
