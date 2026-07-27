@@ -3,7 +3,7 @@ project: Navisworks Export Plugins
 version: 1
 status: draft
 created: 2026-07-26
-updated: 2026-07-26
+updated: 2026-07-27
 prd_version: 1
 main_goal: speed
 top_blocker: skills
@@ -35,6 +35,7 @@ Koordynator BIM nie ma prostego sposobu na przeniesienie **tylko zaznaczonej sel
 | F-02 | nw-plugin-scaffold-2026 | (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend | F-01 | NFR (host wave), Access Control | done |
 | S-03 | export-selection-glb-2026 | użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint | F-02, S-01 | US-01, FR-001, FR-002, FR-003, FR-007, FR-008 | done |
 | S-04 | export-selection-autocad-2026 | użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy | F-02 | FR-004, FR-005, FR-006, FR-007, FR-008 | done |
+| S-05 | dwg-elbow-surface-refine | użytkownik może wyeksportować kolanka / gięcia rur do DWG tak, że w AutoCAD wyglądają jak gładkie powierzchnie krzywe, a nie wielościenne pryzmy | S-04 | FR-006 | done |
 
 ## Streams
 
@@ -44,7 +45,7 @@ Navigation aid — groups items that share a Prerequisites chain. Canonical orde
 |---|---|---|---|
 | A | Host & GLB 2023 (north star) | `F-01` → `S-01` | Ścieżka walidacji MVP na Manage 2023. |
 | B | AutoCAD 2023 | `S-02` | Zależy od `F-01`; **odłożone** jako reverse-port po proof na 2026 (`S-04`). |
-| C | Host & pluginy 2026 | `F-02` → `S-03` → `S-04` | Te same możliwości co Stream A/B; host Manage 2026. AutoCAD proof = `S-04` first (nie blokowane na `S-02`). |
+| C | Host & pluginy 2026 | `F-02` → `S-03` → `S-04` → `S-05` | Te same możliwości co Stream A/B; host Manage 2026. AutoCAD proof = `S-04` first (nie blokowane na `S-02`). `S-05` = fidelity kolanek w DWG. |
 
 ## Baseline
 
@@ -139,6 +140,20 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Risk:** 2026-first AutoCAD proof (PolyfaceMesh + ACadSharp) — odblokowane bez `S-02`. `S-02` wraca później jako reverse-port na Manage 2023. Risk: dual-host maintenance later if 2023 COM/API differs from proven 2026 path.
 - **Status:** done
 
+### S-05: Wygładzanie kolanek w eksporcie DWG (AutoCAD)
+
+- **Outcome:** użytkownik może wyeksportować kolanka / gięcia rur do DWG tak, że w AutoCAD wyglądają jak gładkie powierzchnie krzywe, a nie wielościenne pryzmy
+- **Change ID:** dwg-elbow-surface-refine
+- **PRD refs:** FR-006
+- **Prerequisites:** S-04
+- **Parallel with:** S-02 (gdy wróci reverse-port — refinement powinien iść z `DwgWriter`, nie jako osobna ścieżka 2023)
+- **Blockers:** reprezentatywne selekcje z kolankami w Manage 2026; AutoCAD do wizualnej akceptacji kątów między facetami
+- **Unknowns:**
+  - Jakie progi kąta / limity pasów subdivision są akceptowalne na realnych modelach (koszt trójkątów vs wygląd)? — **Closed**: defaults accepted on real Manage 2026 models (`SplitAngleDegrees=10`, `MaxPasses=4`, harness ≤12°); no Phase 2 tune required.
+  - Czy refinement dotyczy tylko ścieżki AutoCAD (flat-shade PolyfaceMesh), czy kiedyś też GLB? — Owner: user. Block: no (MVP scope = DWG only).
+- **Risk:** AutoCAD flat-shade’uje `PolyfaceMesh`, więc gruba tesselacja z Navisworks zawsze wygląda jak pryzma — stąd `CurvedSurfaceRefiner` przed zapisem. Seed już wpadł przy S-04 (`NavisworksExport.AutoCad.2026/CurvedSurfaceRefiner.cs` + harness elbow); ten slice formalizuje acceptance, strojenie i uniknięcie regresji host-load (nested valuetypes → `ReflectionTypeLoadException`, patrz `lessons.md`). Risk: over-refine → ogromne DWG / wolny eksport; under-refine → kolanka nadal „kanciaste”.
+- **Status:** done
+
 ## Backlog Handoff
 
 | Roadmap ID | Change ID | Suggested issue title | Ready for `/10x-plan` | Notes |
@@ -149,6 +164,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 | F-02 | nw-plugin-scaffold-2026 | Scaffold pluginów Navisworks Manage 2026 (loadable command host) | no | done / archived |
 | S-03 | export-selection-glb-2026 | Eksport selekcji do GLB na Manage 2026 (PowerPoint 3D) | no | done — archived |
 | S-04 | export-selection-autocad-2026 | Eksport selekcji do AutoCAD na Manage 2026 (DWG/DXF) | no | done — archived |
+| S-05 | dwg-elbow-surface-refine | Wygładzanie kolanek / gięć w eksporcie DWG (Manage 2026) | no | done (implemented); archive when ready |
 
 ## Open Roadmap Questions
 
@@ -174,3 +190,4 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **F-02: (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend — bez pełnej logiki eksportu; ten sam układ co F-01, osobny target hosta.** — Archived 2026-07-26 → `context/archive/2026-07-26-nw-plugin-scaffold-2026/`. Lesson: —.
 - **S-03: użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-glb-2026/`. Lesson: Manage 2026 wymaga assembly resolver, column-major macierzy, rozwijania selekcji do liści — patrz `context/foundation/lessons.md`.
 - **S-04: użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-autocad-2026/`. Lesson: —.
+- **S-05: użytkownik może wyeksportować kolanka / gięcia rur do DWG tak, że w AutoCAD wyglądają jak gładkie powierzchnie krzywe, a nie wielościenne pryzmy** — Implemented 2026-07-27 (`context/changes/dwg-elbow-surface-refine/`); archive pending. Lesson: nested valuetypes w `CurvedSurfaceRefiner` muszą zostać primitive-only — patrz `context/foundation/lessons.md`.

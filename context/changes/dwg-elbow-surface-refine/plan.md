@@ -201,26 +201,26 @@ Prove real Manage 2026 elbows look acceptably smooth in AutoCAD shaded view; con
 
 #### Automated
 
-- [x] 1.1 Solution builds: `dotnet build NavisworksExportPlugins.sln`
-- [x] 1.2 Harness passes (exit 0): `dotnet run --project tools/DwgWriterHarness/DwgWriterHarness.csproj`
-- [x] 1.3 Bare GetTypes on AutoCAD 2026 plugin DLL succeeds via existing `tools/diag-*.ps1`
+- [x] 1.1 Solution builds: `dotnet build NavisworksExportPlugins.sln` — db25ad8
+- [x] 1.2 Harness passes (exit 0): `dotnet run --project tools/DwgWriterHarness/DwgWriterHarness.csproj` — db25ad8
+- [x] 1.3 Bare GetTypes on AutoCAD 2026 plugin DLL succeeds via existing `tools/diag-*.ps1` — db25ad8
 
 #### Manual
 
-- [x] 1.4 Harness console shows elbow check OK (facets ≤12°) and pipe wireframe axial edges still visible
+- [x] 1.4 Harness console shows elbow check OK (facets ≤12°) and pipe wireframe axial edges still visible — db25ad8
 
 ### Phase 2: Host visual acceptance (+ conditional tune)
 
 #### Automated
 
-- [ ] 2.1 After any Phase 2 code tune: `dotnet build NavisworksExportPlugins.sln` succeeds
-- [ ] 2.2 After any Phase 2 code tune: harness exit 0 and bare GetTypes OK
-- [ ] 2.3 If no tune: re-run harness once after deploy build (Phase 1 results still stand)
+- [x] 2.1 After any Phase 2 code tune: `dotnet build NavisworksExportPlugins.sln` succeeds
+- [x] 2.2 After any Phase 2 code tune: harness exit 0 and bare GetTypes OK
+- [x] 2.3 If no tune: re-run harness once after deploy build (Phase 1 results still stand)
 
 #### Manual
 
-- [ ] 2.4 Manage 2026: AutoCAD export command visible on ribbon (plugin loaded)
-- [ ] 2.5 Export elbow/bend → AutoCAD shaded: bend looks smooth (not stacked prism panels)
-- [ ] 2.6 Export straight pipe → shaded OK; wireframe barrel not erased
-- [ ] 2.7 Export mixed selection → opens; elbows smooth; no one-sided refine artifacts
-- [ ] 2.8 Source Navisworks document unchanged after exports
+- [x] 2.4 Manage 2026: AutoCAD export command visible on ribbon (plugin loaded)
+- [x] 2.5 Export elbow/bend → AutoCAD shaded: bend looks smooth (not stacked prism panels)
+- [x] 2.6 Export straight pipe → shaded OK; wireframe barrel not erased
+- [x] 2.7 Export mixed selection → opens; elbows smooth; no one-sided refine artifacts
+- [x] 2.8 Source Navisworks document unchanged after exports
