@@ -3,7 +3,7 @@ project: Navisworks Export Plugins
 version: 1
 status: draft
 created: 2026-07-26
-updated: 2026-07-27
+updated: 2026-09-15
 prd_version: 1
 main_goal: speed
 top_blocker: skills
@@ -186,7 +186,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 ## Done
 
 - **F-01: (foundation) minimalny scaffold pluginu Navisworks Manage 2023 ładuje się w hoście i udostępnia punkty wejścia komend — bez pełnej logiki eksportu.** — Archived 2026-07-26 → `context/archive/2026-07-26-nw-plugin-scaffold/`. Lesson: —.
-- **S-01: użytkownik może wyeksportować zaznaczoną selekcję do GLB i otworzyć ją jako interaktywny model 3D w PowerPoint** — Implemented 2026-07-26 (`context/changes/export-selection-glb/`); archive pending. Lesson: —.
+- **S-01: użytkownik może wyeksportować zaznaczoną selekcję do GLB i otworzyć ją jako interaktywny model 3D w PowerPoint** — Archived 2026-09-15 → `context/archive/2026-07-26-export-selection-glb/`. Lesson: —.
 - **F-02: (foundation) minimalny scaffold pluginów Navisworks Manage 2026 ładuje się w hoście i udostępnia punkty wejścia komend — bez pełnej logiki eksportu; ten sam układ co F-01, osobny target hosta.** — Archived 2026-07-26 → `context/archive/2026-07-26-nw-plugin-scaffold-2026/`. Lesson: —.
 - **S-03: użytkownik może wyeksportować zaznaczoną selekcję do GLB z Navisworks Manage 2026 i otworzyć ją jako interaktywny model 3D w PowerPoint** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-glb-2026/`. Lesson: Manage 2026 wymaga assembly resolver, column-major macierzy, rozwijania selekcji do liści — patrz `context/foundation/lessons.md`.
 - **S-04: użytkownik może wyeksportować zaznaczoną selekcję do pliku AutoCAD (DWG/DXF) z Navisworks Manage 2026 i otworzyć go do dalszej pracy** — Archived 2026-07-26 → `context/archive/2026-07-26-export-selection-autocad-2026/`. Lesson: —.

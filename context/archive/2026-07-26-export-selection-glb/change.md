@@ -1,10 +1,10 @@
 ---
 change_id: export-selection-glb
 title: Export selection to GLB (PowerPoint 3D)
-status: implemented
+status: archived
 created: 2026-07-26
-updated: 2026-07-26
-archived_at: null
+updated: 2026-09-15
+archived_at: 2026-09-15T14:24:48Z
 ---
 
 ## Notes
