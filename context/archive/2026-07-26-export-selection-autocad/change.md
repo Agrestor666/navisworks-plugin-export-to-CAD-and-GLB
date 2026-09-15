@@ -1,10 +1,10 @@
 ---
 change_id: export-selection-autocad
 title: Export selection to AutoCAD (DWG/DXF) — current export approaches & trends
-status: preparing
+status: archived
 created: 2026-07-26
-updated: 2026-07-26
-archived_at: null
+updated: 2026-09-15
+archived_at: 2026-09-15T14:25:21Z
 ---
 
 ## Notes
