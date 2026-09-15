@@ -71,7 +71,7 @@ namespace DwgWriterHarness
                 $"Input: pipe {pipe.Count} + elbow {elbow.Count} + cube {cube.Count} triangles, " +
                 $"elbow facets up to {MaxFacetDegrees(SourceFaces(elbow)):0.0}°");
 
-            DwgWriter.WriteDwg(fragments, outPath, Console.WriteLine);
+            DwgWriter.WriteDwg(fragments, outPath, log: Console.WriteLine);
 
             var info = new FileInfo(outPath);
             Console.WriteLine($"Wrote {info.Length} bytes to:{Environment.NewLine}{outPath}");

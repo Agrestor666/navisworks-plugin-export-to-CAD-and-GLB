@@ -1,0 +1,225 @@
+{
+  "project": {
+    "title": "Navisworks Export Plugins",
+    "tagline": "Desktop plugins for Autodesk Navisworks Manage 2026 that export selected 3D geometry to GLB (PowerPoint 3D) and AutoCAD DWG formats",
+    "type": "Desktop Plugin / BIM Tool",
+    "status": "Production",
+    "role": "Solo Developer",
+    "year": 2026,
+    "repo_private": true,
+    "summary": "Two Navisworks Manage 2026 plugins that solve a real BIM workflow gap: exporting only the user's current selection — never the whole model — to formats useful downstream. The GLB plugin enables interactive 3D presentations in PowerPoint, replacing static screenshots. The AutoCAD plugin lets designers continue working on selected geometry in AutoCAD."
+  },
+
+  "problem": {
+    "short": "BIM coordinators working with large Navisworks models have no simple way to extract only a selected subset of objects into formats usable in presentations (PowerPoint 3D) or further CAD design (AutoCAD DWG).",
+    "pain_points": [
+      "Interactive 3D in PowerPoint requires GLB — Navisworks has no native GLB export",
+      "Extracting geometry to AutoCAD for further work involves multi-step manual workarounds",
+      "Existing export options dump the entire model, not just the user's selection",
+      "Screenshots lose 3D interactivity; manual workarounds waste coordination time"
+    ]
+  },
+
+  "plugins": [
+    {
+      "name": "Export to GLB",
+      "description": "Exports the current Navisworks selection to a .glb file (glTF Binary) that can be inserted into PowerPoint as an interactive 3D model.",
+      "host_versions": ["Navisworks Manage 2026"],
+      "output_format": "GLB (glTF Binary 2.0)",
+      "key_features": [
+        "Exports only the current selection — never the whole model",
+        "Preserves per-object colors from Navisworks (including appearance overrides)",
+        "Automatic coordinate system conversion: Navisworks Z-up → glTF Y-up",
+        "Automatic unit conversion to meters (glTF standard)",
+        "PBR material setup tuned for PowerPoint 3D (metallic=0, roughness=0.8)",
+        "Compatible with PowerPoint 365 Insert 3D Model feature",
+        "Empty selection guard — shows user-friendly error instead of writing an empty file",
+        "Read-only — never modifies the source Navisworks model"
+      ],
+      "projects": [
+        {
+          "assembly": "NavisworksExport.Glb.2026",
+          "host": "Navisworks Manage 2026"
+        }
+      ]
+    },
+    {
+      "name": "Export to AutoCAD",
+      "description": "Exports the current Navisworks selection to a .dwg file that opens directly in AutoCAD for further design work, with colored PolyfaceMesh entities and smooth curved surfaces.",
+      "host_versions": ["Navisworks Manage 2026"],
+      "output_format": "DWG (AutoCAD Drawing, version AC1032 / AutoCAD 2018+)",
+      "key_features": [
+        "Exports only the current selection — never the whole model",
+        "Geometry written as colored PolyfaceMesh entities (one per color per fragment)",
+        "Automatic unit conversion with correct INSUNITS header (supports mm, cm, m, ft, in, etc.)",
+        "Linear-to-sRGB color conversion so surfaces don't appear too dark in AutoCAD",
+        "Curved surface refinement (Phong tessellation) — elbows and pipe bends look smooth, not prismatic",
+        "Smart edge visibility: triangulation seams are hidden, real model edges stay visible",
+        "Vertex welding with epsilon tolerance for clean shading across shared edges",
+        "Winding-order correction so faces shade correctly under AutoCAD's flat lighting",
+        "Viewport defaults to Gouraud Shaded for immediate visual feedback",
+        "Detailed diagnostic logging to %TEMP% for troubleshooting",
+        "Read-only — never modifies the source Navisworks model"
+      ],
+      "projects": [
+        {
+          "assembly": "NavisworksExport.AutoCad.2026",
+          "host": "Navisworks Manage 2026"
+        }
+      ]
+    }
+  ],
+
+  "tech_stack": {
+    "language": "C#",
+    "lang_version": "Latest (C# 12+)",
+    "framework": ".NET Framework 4.8",
+    "platform": "x64",
+    "ide": "Visual Studio 2022 / Cursor",
+    "build_system": "MSBuild / dotnet CLI (SDK-style .csproj)",
+    "solution": "NavisworksExportPlugins.sln"
+  },
+
+  "technologies": {
+    "host_apis": [
+      {
+        "name": "Autodesk Navisworks .NET API",
+        "purpose": "Plugin hosting, selection access, document/unit queries",
+        "details": "AddInPlugin command entry points loaded by Navisworks Manage 2026"
+      },
+      {
+        "name": "Autodesk Navisworks COM API (ComApi / Interop.ComApi)",
+        "purpose": "Triangle geometry extraction via GenerateSimplePrimitives callback",
+        "details": "COM interop with InwSimplePrimitivesCB for per-fragment mesh data, local-to-world transforms, material/appearance colors"
+      }
+    ],
+    "libraries": [
+      {
+        "name": "SharpGLTF",
+        "version": "1.0.6",
+        "nuget": "SharpGLTF.Toolkit",
+        "purpose": "GLB/glTF 2.0 file writing",
+        "used_by": "GLB plugin"
+      },
+      {
+        "name": "ACadSharp",
+        "version": "3.6.35",
+        "nuget": "ACadSharp",
+        "purpose": "DWG file writing (PolyfaceMesh entities, CadDocument, DwgWriter)",
+        "used_by": "AutoCAD plugin"
+      }
+    ],
+    "system": [
+      "System.Windows.Forms (SaveFileDialog, MessageBox)",
+      "System.Runtime.InteropServices (COM interop, ComVisible callbacks)",
+      "System.Numerics (Vector3, Vector4, Matrix4x4 for GLB vertex data)"
+    ]
+  },
+
+  "architecture": {
+    "overview": "Modular solution with shared geometry extraction and format-specific writers, targeting Navisworks Manage 2026 only",
+    "projects": [
+      {
+        "name": "NavisworksExport.Geometry.2026",
+        "role": "Shared library — COM-based triangle extraction from Navisworks selections",
+        "key_classes": [
+          "SelectionGeometryExtractor — reads triangles from COM via GenerateSimplePrimitives",
+          "PrimitiveCallback — COM callback (public, ComVisible) that collects vertices/triangles",
+          "Vec3, Rgba, ExtractedTriangle, ExtractedFragment — geometry DTOs"
+        ]
+      },
+      {
+        "name": "NavisworksExport.Glb.2026",
+        "role": "GLB export plugin for Navisworks Manage 2026",
+        "key_classes": [
+          "GlbExportCommand — AddInPlugin entry point with assembly resolver, NoInlining guard",
+          "GlbWriter — Z-up→Y-up coordinate swap, PBR material setup, SharpGLTF scene building"
+        ]
+      },
+      {
+        "name": "NavisworksExport.AutoCad.2026",
+        "role": "AutoCAD DWG export plugin for Navisworks Manage 2026",
+        "key_classes": [
+          "AutoCadExportCommand — AddInPlugin entry point with assembly resolver, NoInlining guard",
+          "DwgWriter — PolyfaceMesh generation, vertex welding, edge visibility, sRGB conversion",
+          "CurvedSurfaceRefiner — Phong tessellation for smooth curved surfaces in flat-shaded DWG",
+          "PluginAssemblyResolver — runtime assembly probing from plugin folder"
+        ]
+      }
+    ],
+    "patterns": [
+      "AddInPlugin command pattern (Navisworks plugin SDK)",
+      "COM interop callback pattern (InwSimplePrimitivesCB)",
+      "Assembly resolve pattern for private plugin dependencies",
+      "NoInlining separation: Execute() installs resolver → RunExport() does work (JIT safety)",
+      "Selection expansion: composite nodes → geometry-bearing leaves before extraction",
+      "Fragment-level geometry caching with COM object reference dedup",
+      "Phong tessellation subdivision for curved surface refinement"
+    ]
+  },
+
+  "technical_challenges": [
+    {
+      "challenge": "COM geometry extraction from Navisworks",
+      "solution": "Implemented COM interop callback (InwSimplePrimitivesCB) with ComVisible attribute, proper COM state initialization, and path-identity filtering to handle fragment ownership across composite nodes"
+    },
+    {
+      "challenge": "Coordinate system differences between formats",
+      "solution": "GLB requires Y-up right-handed (swapped from Navisworks Z-up), AutoCAD DWG stays Z-up. Unit conversion: GLB targets meters, DWG targets millimeters with INSUNITS header"
+    },
+    {
+      "challenge": "Column-major COM matrices",
+      "solution": "Navisworks COM returns local-to-world transforms in column-major order — translation at indices 12/13/14, not 3/7/11. Separate transform paths for positions (full 4×4) and normals (3×3 rotation only)"
+    },
+    {
+      "challenge": "Flat shading artifacts in AutoCAD PolyfaceMesh",
+      "solution": "Built a Phong tessellation subdivider (CurvedSurfaceRefiner) that splits edges where endpoint normals diverge, lifting new vertices onto the tangent-plane interpolation of the surface. Multi-pass with triangle budget cap"
+    },
+    {
+      "challenge": "Plugin assembly loading in Navisworks 2026",
+      "solution": "Navisworks uses LoadFile-style loading that doesn't probe the plugin folder. Implemented AppDomain.AssemblyResolve handler and NoInlining method separation to prevent JIT crashes before the resolver is installed. Nested valuetype structs must use only primitive fields to survive the host's GetTypes scan"
+    },
+    {
+      "challenge": "Color fidelity across formats",
+      "solution": "Navisworks reports colors in linear light. GLB/glTF defines COLOR_0 as linear (pass-through). DWG true colors are display values — implemented sRGB gamma transfer function. Per-vertex COM colors are unreliable on Manage 2026, so color is sourced from ModelItem.Geometry.ActiveColor with fallback chain"
+    },
+    {
+      "challenge": "Edge visibility in DWG wireframe mode",
+      "solution": "Computed face adjacency and normal angles to distinguish real model edges from triangulation seams. Only coplanar edges (< 1° threshold) are hidden, preserving barrel edges on pipes at ~15° facet angles"
+    }
+  ],
+
+  "workflow": {
+    "user_flow": [
+      "User opens a large BIM model in Navisworks Manage 2026",
+      "User selects specific objects (pipes, structural elements, etc.)",
+      "User clicks 'Export to GLB' or 'Export to AutoCAD' from the Add-Ins ribbon",
+      "Plugin extracts geometry from selection via COM API",
+      "Plugin converts coordinates, colors, and writes the target format",
+      "User inserts GLB into PowerPoint as interactive 3D model, or opens DWG in AutoCAD"
+    ],
+    "deployment": "Post-build MSBuild target copies plugin DLLs into Navisworks Manage 2026 Plugins directory (elevated terminal required for Program Files access)"
+  },
+
+  "skills_demonstrated": [
+    "C# / .NET Framework desktop development",
+    "Autodesk Navisworks API and COM interop programming",
+    "3D geometry processing (triangulation, coordinate transforms, normal computation)",
+    "glTF/GLB format and PBR material authoring",
+    "AutoCAD DWG format and entity modeling (PolyfaceMesh)",
+    "Computational geometry: Phong tessellation subdivision, vertex welding, edge classification",
+    "COM interop: callbacks, marshalling, ComVisible, assembly resolution",
+    "Plugin architecture for host applications with strict loading constraints",
+    "Color science: linear light ↔ sRGB gamma conversion",
+    "MSBuild custom targets and host-local API references",
+    "Solo end-to-end product development: problem → architecture → implementation"
+  ],
+
+  "metrics": {
+    "solution_projects": 3,
+    "supported_hosts": ["Navisworks Manage 2026"],
+    "output_formats": ["GLB (glTF Binary 2.0)", "DWG (AutoCAD AC1032)"],
+    "completed_milestones": 7,
+    "lessons_documented": 9
+  }
+}

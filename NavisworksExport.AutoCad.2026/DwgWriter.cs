@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ACadSharp;
 using ACadSharp.Entities;
 using ACadSharp.Tables;
+using ACadSharp.Types.Units;
 using CSMath;
 using NavisworksExport.Geometry;
 using ACadDwgWriter = ACadSharp.IO.DwgWriter;
@@ -45,6 +46,8 @@ namespace NavisworksExport.AutoCad2026
         public static void WriteDwg(
             IReadOnlyList<ExtractedFragment> fragments,
             string filePath,
+            double coordinateScale = 1.0,
+            UnitsType insUnits = UnitsType.Unitless,
             Action<string>? log = null)
         {
             if (fragments is null)
@@ -73,6 +76,8 @@ namespace NavisworksExport.AutoCad2026
 
             var doc = new CadDocument();
             doc.Header.Version = ACadVersion.AC1032;
+            doc.Header.InsUnits = insUnits;
+            log?.Invoke($"DWG INSUNITS = {insUnits}, coordinate scale = {coordinateScale}");
 
             var byColor = new Dictionary<(byte R, byte G, byte B), List<ExtractedTriangle>>();
             var palette = new Dictionary<(byte R, byte G, byte B), Rgba>();
@@ -104,7 +109,7 @@ namespace NavisworksExport.AutoCad2026
                         palette[pair.Key] = pair.Value[0].C0;
                     }
 
-                    AppendColoredMeshes(doc, pair.Value, new Color(pair.Key.R, pair.Key.G, pair.Key.B));
+                    AppendColoredMeshes(doc, pair.Value, new Color(pair.Key.R, pair.Key.G, pair.Key.B), coordinateScale);
                 }
             }
 
@@ -120,7 +125,8 @@ namespace NavisworksExport.AutoCad2026
         private static void AppendColoredMeshes(
             CadDocument doc,
             IReadOnlyList<ExtractedTriangle> triangles,
-            Color meshColor)
+            Color meshColor,
+            double coordinateScale)
         {
             var chunk = new MeshChunk();
 
@@ -128,14 +134,14 @@ namespace NavisworksExport.AutoCad2026
             {
                 if (chunk.VertexCount + 3 > MaxVerticesPerMesh)
                 {
-                    chunk.Emit(doc, meshColor);
+                    chunk.Emit(doc, meshColor, coordinateScale);
                     chunk = new MeshChunk();
                 }
 
                 chunk.AddTriangle(tri);
             }
 
-            chunk.Emit(doc, meshColor);
+            chunk.Emit(doc, meshColor, coordinateScale);
         }
 
         /// <summary>
@@ -183,7 +189,7 @@ namespace NavisworksExport.AutoCad2026
                 return Dot(geometric, shading) < 0.0;
             }
 
-            public void Emit(CadDocument doc, Color meshColor)
+            public void Emit(CadDocument doc, Color meshColor, double coordinateScale)
             {
                 if (_faces.Count == 0)
                 {
@@ -193,7 +199,10 @@ namespace NavisworksExport.AutoCad2026
                 var mesh = new PolyfaceMesh { Color = meshColor };
                 foreach (var position in _positions)
                 {
-                    mesh.Vertices.Add(new VertexFaceMesh(new XYZ(position.X, position.Y, position.Z)));
+                    mesh.Vertices.Add(new VertexFaceMesh(new XYZ(
+                        position.X * coordinateScale,
+                        position.Y * coordinateScale,
+                        position.Z * coordinateScale)));
                 }
 
                 var hidden = HiddenEdges();

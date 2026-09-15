@@ -1,6 +1,6 @@
 # Navisworks Export Plugins (GLB & AutoCAD)
 
-Desktop add-ins for **Autodesk Navisworks Manage** that export the **current selection** to formats you can use downstream — interactive 3D in PowerPoint (GLB) or continued design work in AutoCAD (DWG).
+Desktop add-ins for **Autodesk Navisworks Manage 2026** that export the **current selection** to formats you can use downstream — interactive 3D in PowerPoint (GLB) or continued design work in AutoCAD (DWG).
 
 Built for BIM coordinators and designers who work with large federated models and need to move **only what they selected**, not the entire project.
 
@@ -21,6 +21,8 @@ These plugins close that gap with a single command from the Add-Ins ribbon.
 
 ## Plugins
 
+**Host:** Navisworks Manage **2026** only (Manage 2023 and 2025 are out of scope).
+
 ### Export to GLB
 
 Exports the current selection to **glTF Binary (`.glb`)** for **PowerPoint 365 Insert 3D Model**.
@@ -32,8 +34,6 @@ Exports the current selection to **glTF Binary (`.glb`)** for **PowerPoint 365 I
 | Coordinates | Navisworks Z-up → glTF Y-up |
 | Units | Converted to meters (glTF convention) |
 | Materials | PBR tuned for PowerPoint (non-metallic, readable shading) |
-
-**Supported hosts:** Navisworks Manage **2023** and **2026**
 
 ### Export to AutoCAD
 
@@ -48,9 +48,6 @@ Exports the current selection to **AutoCAD DWG** (AC1032 / AutoCAD 2018+) as col
 | Edges | Triangulation seams hidden; real model edges preserved in wireframe |
 | Viewport | Defaults to Gouraud shaded on open |
 
-**Supported hosts:** Navisworks Manage **2026**  
-*(Manage 2023 AutoCAD export is planned as a reverse-port.)*
-
 ---
 
 ## Quick start
@@ -59,7 +56,7 @@ Exports the current selection to **AutoCAD DWG** (AC1032 / AutoCAD 2018+) as col
 
 - **Windows** x64
 - **.NET Framework 4.8** SDK (for building)
-- **Autodesk Navisworks Manage 2023** and/or **2026** (matching the plugin you want)
+- **Autodesk Navisworks Manage 2026**
 - **Visual Studio 2022** or `dotnet` CLI (recommended for build)
 - For GLB verification: **Microsoft 365 PowerPoint** with 3D model support
 - For DWG verification: **AutoCAD 2018+**
@@ -71,12 +68,11 @@ dotnet restore
 dotnet build NavisworksExportPlugins.sln -c Release
 ```
 
-Override install paths if Navisworks is not in the default location:
+Override the install path if Navisworks is not in the default location:
 
 ```powershell
 dotnet build NavisworksExportPlugins.sln -c Release `
-  -p:NavisworksInstallDir="C:\Program Files\Autodesk\Navisworks Manage 2023\" `
-  -p:NavisworksInstallDir2026="C:\Program Files\Autodesk\Navisworks Manage 2026\"
+  -p:NavisworksInstallDir="C:\Program Files\Autodesk\Navisworks Manage 2026\"
 ```
 
 ### Install
@@ -85,9 +81,8 @@ Release builds copy plugin assemblies into the Navisworks plugins folder:
 
 | Plugin | Deploy target |
 |---|---|
-| GLB (2023) | `{NavisworksInstallDir}Plugins\NavisworksExport.Glb\` |
-| GLB (2026) | `{NavisworksInstallDir2026}Plugins\NavisworksExport.Glb.2026\` |
-| AutoCAD (2026) | `{NavisworksInstallDir2026}Plugins\NavisworksExport.AutoCad.2026\` |
+| GLB | `{NavisworksInstallDir}Plugins\NavisworksExport.Glb.2026\` |
+| AutoCAD | `{NavisworksInstallDir}Plugins\NavisworksExport.AutoCad.2026\` |
 
 Paths under `Program Files` require an **elevated** terminal or IDE for deploy to succeed. Non-elevated builds still compile; deploy is skipped with a warning.
 
@@ -95,7 +90,7 @@ Restart Navisworks after the first install.
 
 ### Use
 
-1. Open a model in Navisworks Manage.
+1. Open a model in Navisworks Manage 2026.
 2. Select the objects you want to export.
 3. Run **Export to GLB** or **Export to AutoCAD** from the Add-Ins tab.
 4. Choose a save location.
@@ -109,12 +104,9 @@ If the selection is empty or has no mesh geometry, the plugin shows an error and
 
 ```
 NavisworksExportPlugins.sln
-├── NavisworksExport.Geometry          Shared COM geometry extraction (2023)
-├── NavisworksExport.Geometry.2026     Shared COM geometry extraction (2026)
-├── NavisworksExport.Glb               GLB plugin (Manage 2023)
-├── NavisworksExport.Glb.2026          GLB plugin (Manage 2026)
-├── NavisworksExport.AutoCad           AutoCAD plugin scaffold (Manage 2023)
-└── NavisworksExport.AutoCad.2026      AutoCAD DWG plugin (Manage 2026)
+├── NavisworksExport.Geometry.2026     Shared COM geometry extraction
+├── NavisworksExport.Glb.2026          GLB plugin
+└── NavisworksExport.AutoCad.2026      AutoCAD DWG plugin
 ```
 
 **Pipeline:** selection → COM `GenerateSimplePrimitives` → world-space triangles → format writer (GLB or DWG).
@@ -151,16 +143,16 @@ NavisworksExportPlugins.sln
 
 ## Debugging
 
-Launch the matching Navisworks host and attach your debugger:
-
-| Host | Executable |
-|---|---|
-| Manage 2023 | `{NavisworksInstallDir}Roamer.exe` |
-| Manage 2026 | `{NavisworksInstallDir2026}Roamer.exe` |
-
-AutoCAD 2026 plugin logs diagnostics to:
+Launch Navisworks Manage 2026 and attach your debugger:
 
 ```
+{NavisworksInstallDir}Roamer.exe
+```
+
+Plugins log diagnostics to:
+
+```
+%TEMP%\NavisworksExport.Glb.2026.log
 %TEMP%\NavisworksExport.AutoCad.2026.log
 ```
 
@@ -170,10 +162,10 @@ Harness projects under `tools/` support offline writer testing without the Navis
 
 ## Status
 
-| Capability | Manage 2023 | Manage 2026 |
-|---|---|---|
-| Export to GLB | Done | Done |
-| Export to AutoCAD (DWG) | Planned | Done |
+| Capability | Manage 2026 |
+|---|---|
+| Export to GLB | Done |
+| Export to AutoCAD (DWG) | Done |
 
 ---
 
@@ -183,7 +175,7 @@ This repository is maintained as a focused export tool. Before opening a PR:
 
 1. Read `AGENTS.md` for repository conventions.
 2. Keep changes scoped — export **selection only**, read-only on the source model.
-3. Test inside the matching Navisworks Manage version before submitting.
+3. Test inside Navisworks Manage 2026 before submitting.
 
 Issue reports with reproducible steps (host version, selection type, expected vs actual output) are welcome.
 

@@ -38,20 +38,20 @@ Pain categories: workflow friction, missing capability, data trapped, coordinati
 ### Primary
 
 **Flow GLB (PowerPoint 3D):**
-1. Użytkownik otwiera duży model w Navisworks Manage 2023
+1. Użytkownik otwiera duży model w Navisworks Manage 2026
 2. Zaznacza grupę obiektów (selekcja)
 3. Uruchamia plugin „Export to GLB”
 4. Zapisuje plik `.glb`
 5. Wstawia GLB do PowerPoint — interaktywny model 3D działa w prezentacji
 
 **Flow AutoCAD:**
-1. Użytkownik otwiera model w Navisworks Manage 2023
+1. Użytkownik otwiera model w Navisworks Manage 2026
 2. Zaznacza grupę obiektów
 3. Uruchamia plugin „Export to AutoCAD”
 4. Zapisuje plik (DWG/DXF)
 5. Otwiera plik w AutoCAD — geometria selekcji jest gotowa do dalszej pracy
 
-Oba flow muszą działać end-to-end w MVP. Navisworks Manage 2026 — poza MVP (następna fala hosta); Manage 2025 pominięte / nieplanowane.
+Oba flow muszą działać end-to-end w MVP na Navisworks Manage 2026. Manage 2023 i Manage 2025 są poza zakresem.
 
 ### Secondary
 
@@ -67,7 +67,7 @@ Brak — sam core flow wystarczy w v1.
 
 ### US-01: Eksport selekcji do GLB dla PowerPoint
 
-- **Given** użytkownik ma otwarty model w Navisworks Manage 2023 z zaznaczoną grupą obiektów
+- **Given** użytkownik ma otwarty model w Navisworks Manage 2026 z zaznaczoną grupą obiektów
 - **When** uruchamia plugin „Export to GLB” i zapisuje plik
 - **Then** plik GLB otwiera się w PowerPoint jako interaktywny model 3D bez błędów
 
@@ -84,7 +84,7 @@ Brak — sam core flow wystarczy w v1.
 
 ### Plugin GLB (PowerPoint 3D)
 
-- FR-001: Użytkownik może uruchomić plugin GLB z poziomu Navisworks Manage 2023. Priority: must-have
+- FR-001: Użytkownik może uruchomić plugin GLB z poziomu Navisworks Manage 2026. Priority: must-have
   > Socrates: Brak counter-argumentu — FR stoi jako napisane.
 
 - FR-002: Użytkownik może wyeksportować aktualną selekcję obiektów do pliku GLB. Priority: must-have
@@ -95,7 +95,7 @@ Brak — sam core flow wystarczy w v1.
 
 ### Plugin AutoCAD
 
-- FR-004: Użytkownik może uruchomić plugin AutoCAD z poziomu Navisworks Manage 2023. Priority: must-have
+- FR-004: Użytkownik może uruchomić plugin AutoCAD z poziomu Navisworks Manage 2026. Priority: must-have
   > Socrates: Brak counter-argumentu — FR stoi jako napisane.
 
 - FR-005: Użytkownik może wyeksportować aktualną selekcję obiektów do pliku AutoCAD (DWG/DXF). Priority: must-have
@@ -117,7 +117,7 @@ Brak — sam core flow wystarczy w v1.
 - Model Navisworks pozostaje nietknięty po eksporcie — plugin tylko czyta selekcję, nie modyfikuje oryginalnego modelu.
 - Plik GLB otwiera się w PowerPoint 3D (Office 365) bez błędów renderowania.
 - Plik AutoCAD (DWG/DXF) otwiera się w wspieranej wersji AutoCAD bez błędów importu.
-- MVP wspiera Navisworks Manage 2023; następna fala hosta to Manage 2026 (Manage 2025 pominięte / nieplanowane).
+- Host to Navisworks Manage 2026. Manage 2023 i Manage 2025 są poza zakresem.
 
 ## Business Logic
 
@@ -136,7 +136,7 @@ N/A — lokalne pluginy desktopowe w Navisworks Manage. Brak auth, brak ról.
 
 ## Non-Goals
 
-- **Navisworks Manage 2026 w MVP** — następna fala hosta (twin projects `*.2026`) poza MVP; MVP targetuje wyłącznie NW 2023. Manage 2025 pominięte / nieplanowane.
+- **Navisworks Manage 2023 / 2025** — poza zakresem; jedyny host to Manage 2026.
 - **Eksport całego modelu** — pluginy eksportują tylko selekcję; pełny model poza scope.
 - **Chmura / synchronizacja / backend** — brak cloud sync, współdzielonych ustawień, ani multi-user backend.
 - **Pełne metadane BIM** — brak eksportu properties, IFC data, klasyfikacji; tylko geometria.

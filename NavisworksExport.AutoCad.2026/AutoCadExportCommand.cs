@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
+using ACadSharp.Types.Units;
+using Autodesk.Navisworks.Api;
 using Autodesk.Navisworks.Api.Plugins;
 using NavisworksExport.Geometry;
 using NwApplication = Autodesk.Navisworks.Api.Application;
@@ -90,8 +92,13 @@ namespace NavisworksExport.AutoCad2026
                 return 1;
             }
 
+            var docUnits = doc!.Units;
+            var coordinateScale = UnitConversion.ScaleFactor(docUnits, Units.Millimeters);
+            var insUnits = MapToInsUnits(docUnits);
+            ExportLog.Write($"units = {docUnits}, coordinateScale = {coordinateScale}, insUnits = {insUnits}");
+
             ExportLog.Write("write start");
-            DwgWriter.WriteDwg(fragments, filePath, ExportLog.Write);
+            DwgWriter.WriteDwg(fragments, filePath, coordinateScale, insUnits, ExportLog.Write);
             ExportLog.Write("write done");
 
             MessageBox.Show(
@@ -105,6 +112,25 @@ namespace NavisworksExport.AutoCad2026
         private static void ShowError(string message)
         {
             MessageBox.Show(message, Caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private static UnitsType MapToInsUnits(Units nwUnits)
+        {
+            switch (nwUnits)
+            {
+                case Units.Millimeters: return UnitsType.Millimeters;
+                case Units.Centimeters: return UnitsType.Centimeters;
+                case Units.Meters:      return UnitsType.Meters;
+                case Units.Kilometers:  return UnitsType.Kilometers;
+                case Units.Inches:      return UnitsType.Inches;
+                case Units.Feet:        return UnitsType.Feet;
+                case Units.Yards:       return UnitsType.Yards;
+                case Units.Miles:       return UnitsType.Miles;
+                case Units.Micrometers: return UnitsType.Microns;
+                case Units.Mils:        return UnitsType.Mils;
+                case Units.Microinches: return UnitsType.Microinches;
+                default:                return UnitsType.Unitless;
+            }
         }
     }
 }

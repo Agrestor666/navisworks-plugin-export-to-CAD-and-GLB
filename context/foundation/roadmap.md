@@ -17,7 +17,7 @@ top_blocker: skills
 
 ## Vision recap
 
-Koordynator BIM nie ma prostego sposobu na przeniesienie **tylko zaznaczonej selekcji** z Navisworks Manage do formatów użytecznych dalej — interaktywnego 3D w PowerPoint (GLB) ani pliku do pracy w AutoCAD. Dwa osobne pluginy rozwiązują dwa momenty workflow: prezentacja vs kontynuacja projektowania. MVP waliduje flow na Navisworks Manage 2023; kolejna fala hosta to Manage **2026** (te same dwa pluginy). Manage **2025** pozostaje poza zakresem (brak instalacji). Eksport zawsze ogranicza się do bieżącej selekcji, nigdy całego modelu.
+Koordynator BIM nie ma prostego sposobu na przeniesienie **tylko zaznaczonej selekcji** z Navisworks Manage do formatów użytecznych dalej — interaktywnego 3D w PowerPoint (GLB) ani pliku do pracy w AutoCAD. Dwa osobne pluginy rozwiązują dwa momenty workflow: prezentacja vs kontynuacja projektowania. Produkt targetuje wyłącznie Navisworks Manage **2026**. Manage **2023** i **2025** są poza zakresem. Eksport zawsze ogranicza się do bieżącej selekcji, nigdy całego modelu.
 
 ## North star
 

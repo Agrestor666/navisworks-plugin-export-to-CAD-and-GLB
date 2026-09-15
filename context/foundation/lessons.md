@@ -4,7 +4,7 @@
 
 ## Resolve plugin dependencies from the plugin folder on Manage 2026
 
-- **Context**: Any `*.2026` Add-In plugin that references private assemblies (Geometry twin, NuGet writers such as SharpGLTF or ACadSharp) under `{NavisworksInstallDir2026}Plugins\<AssemblyName>\`.
+- **Context**: Any `*.2026` Add-In plugin that references private assemblies (`NavisworksExport.Geometry.2026`, NuGet writers such as SharpGLTF or ACadSharp) under `{NavisworksInstallDir}Plugins\<AssemblyName>\`.
 - **Problem**: Navisworks loads the plugin DLL without probing that folder (`LoadFile`-style). JIT-compiling a method that references a missing dependency throws `FileNotFoundException` and can hard-crash the host before any user-facing error handler runs (S-03 GLB 2026). Nested **valuetypes** whose fields are valuetypes from a private assembly (e.g. `CurvedSurfaceRefiner.Midpoint` holding `Geometry.Vec3`) also make the host's startup `GetTypes` throw `ReflectionTypeLoadException` in Message Center — before `Execute` ever runs (S-04 AutoCAD 2026). A `[ModuleInitializer]` does **not** run during that `GetTypes` scan on net48, so it cannot fix the scan; it only helps later resolve at `Execute`/JIT.
 - **Rule**: Keep nested struct layouts free of private-assembly valuetype fields/properties (store primitives; rebuild `Vec3`/`Rgba` at use sites). Install `AppDomain.CurrentDomain.AssemblyResolve` at the start of `Execute` (and optionally via `[ModuleInitializer]` for defense in depth). Keep `[NoInlining] RunExport`. Deploy every private `*.dll` (and `*.pdb` for diagnostics) into the plugin folder — not only the plugin assembly. See `NavisworksExport.AutoCad.2026/PluginAssemblyResolver.cs` and `CurvedSurfaceRefiner.cs`.
 - **Applies to**: plan, implement, impl-review
@@ -49,6 +49,13 @@
 - **Context**: COM triangle extraction in `PrimitiveCallback` / `SelectionGeometryExtractor`.
 - **Problem**: Requesting `eCOLOR` still returns zeroed vertex colors on Manage 2026; exports appear black or wrong unless color is sourced elsewhere (S-03 GLB 2026).
 - **Rule**: Prefer `ModelItem.Geometry.ActiveColor` and `ActiveTransparency` via `ComApiBridge.ToModelItem(path)`; fall back to fragment appearance material, then a neutral default. Do not rely on per-vertex COM color arrays for MVP fidelity.
+- **Applies to**: implement, impl-review
+
+## DWG export must convert coordinates and set INSUNITS
+
+- **Context**: Writing DWG files from Navisworks COM-extracted world-space coordinates (`DwgWriter`).
+- **Problem**: Navisworks world coordinates use the document's unit system (`Document.Units`), which is determined by the first appended file (e.g., Feet for Revit models, Meters for many IFC/NWD). Writing these coordinates to DWG without unit conversion and without setting `$INSUNITS` makes AutoCAD unable to interpret the values correctly — coordinates appear at wrong scale or mismatch what the user expects in standard BIM DWG workflows (typically millimeters).
+- **Rule**: Always compute `UnitConversion.ScaleFactor(doc.Units, Units.Millimeters)` and apply it to all DWG vertex positions. Set `CadDocument.Header.InsUnits = UnitsType.Millimeters` so AutoCAD knows the unit. Log both the source unit and scale factor to `%TEMP%` for diagnostics. The GLB writer's Y-up swap and meter conversion are separate concerns — DWG is Z-up and targets millimeters.
 - **Applies to**: implement, impl-review
 
 ## GLB PBR defaults render black without an environment map

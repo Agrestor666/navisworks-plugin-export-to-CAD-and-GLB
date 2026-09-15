@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\NavisworksExport.AutoCad\Images\autocad16.png" Link="Images\autocad16.png" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="..\NavisworksExport.AutoCad\Images\autocad32.png" Link="Images\autocad32.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Images\autocad16.png" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Images\autocad32.png" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,12 +29,12 @@
   <!-- Manage 2026 host API only — install required; no NuGet fallback. -->
   <ItemGroup>
     <Reference Include="Autodesk.Navisworks.Api">
-      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.Api.dll</HintPath>
+      <HintPath>$(NavisworksInstallDir)Autodesk.Navisworks.Api.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Autodesk.Navisworks.ComApi">
-      <HintPath>$(NavisworksInstallDir2026)Autodesk.Navisworks.ComApi.dll</HintPath>
+      <HintPath>$(NavisworksInstallDir)Autodesk.Navisworks.ComApi.dll</HintPath>
       <Private>False</Private>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -48,10 +48,10 @@
       <_DeployDlls Include="$(TargetDir)*.pdb" />
       <_DeployIcons Include="$(TargetDir)Images\*.png" />
     </ItemGroup>
-    <MakeDir Directories="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
-    <MakeDir Directories="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)\Images" ContinueOnError="WarnAndContinue" />
-    <Copy SourceFiles="@(_DeployDlls)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
-    <Copy SourceFiles="@(_DeployIcons)" DestinationFolder="$(NavisworksInstallDir2026)Plugins\$(AssemblyName)\Images" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
+    <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)" ContinueOnError="WarnAndContinue" />
+    <MakeDir Directories="$(NavisworksInstallDir)Plugins\$(AssemblyName)\Images" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="@(_DeployDlls)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
+    <Copy SourceFiles="@(_DeployIcons)" DestinationFolder="$(NavisworksInstallDir)Plugins\$(AssemblyName)\Images" OverwriteReadOnlyFiles="true" ContinueOnError="WarnAndContinue" />
   </Target>
 
 </Project>
